@@ -1,0 +1,11 @@
+{
+    "author": "Carlos Jenkins",
+    "email": "carlos@jenkins.co.cr",
+    "repo_name": "plantweb",
+    "repo_url": "https://github.com/carlos-jenkins/plantweb",
+    "doc_url": "https://plantweb.readthedocs.org/",
+    "project_name": "PlantUML Client in Python",
+    "short_description": "Python client for the PlantUML server",
+    "year": "2016",
+    "version": "0.1.0"
+}
