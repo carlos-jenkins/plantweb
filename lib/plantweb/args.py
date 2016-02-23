@@ -23,10 +23,8 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
-from traceback import format_exc
-from os.path import isfile, abspath
-
-from requests import head
+from distutils.dir_util import mkpath
+from os.path import isfile, abspath, expanduser
 
 from . import __version__
 
@@ -71,16 +69,15 @@ def validate_args(args):
         log.error('The ditaa engine doens\'t support the svg format')
         exit(1)
 
-    # Check given server
-    try:
-        response = head(args.server)
-        response.raise_for_status()
-    except:
-        log.debug(format_exc())
-        log.error(
-            'Communication error with the server : {}'.format(args.server)
-        )
-        exit(1)
+    # Prepare default datatypes
+    if args.engine == 'auto':
+        args.engine = None
+    if args.format == 'auto':
+        args.format = None
+
+    # Ensure cache dir
+    if not args.no_cache:
+        mkpath(expanduser(args.cache_dir))
 
     return args
 
@@ -108,25 +105,37 @@ def parse_args(argv=None):
     parser.add_argument(
         '--version',
         action='version',
-        version='PlantUML Client in Python v{}'.format(__version__)
+        version='Plantweb {}'.format(__version__)
     )
 
+    parser.add_argument(
+        '--engine',
+        default='auto',
+        help='engine to use to render diagram',
+        choices=['auto', 'plantuml', 'graphviz', 'ditaa']
+    )
     parser.add_argument(
         '--format',
         default='auto',
         help='diagram export format',
         choices=['auto', 'svg', 'png']
     )
+
     parser.add_argument(
         '--server',
         default='http://plantuml.com/plantuml/',
         help='server to use for rendering'
     )
+
     parser.add_argument(
-        '--engine',
-        default='auto',
-        help='engine to use to render diagram',
-        choices=['auto', 'plantuml', 'graphviz', 'ditaa']
+        '--no-cache',
+        action='store_true',
+        help='do not use cache'
+    )
+    parser.add_argument(
+        '--cache-dir',
+        default='~/.cache/plantweb',
+        help='directory to store cached renders'
     )
 
     parser.add_argument(

@@ -2,7 +2,27 @@
 PlantUML Client in Python
 =========================
 
-Python client for the PlantUML server
+Python client for the PlantUML server.
+
+A command line interface is provided that allows to render PlantUML, Graphviz
+and Ditaa diagrams without the need to install them.
+
+A Python 2.7 and 3.4 API (``render`` and ``render_file``) and a Sphinx
+directive ``uml ::`` is also provided.
+
+Plantweb features a local cache that allows to avoid requesting the server for
+already rendered diagrams, speeding up CI of documentation with lots of
+diagrams.
+
+Finally, being pure Python, non-local rendering, Plantweb is the only way to
+display and render PlantUML, Graphviz and Ditaa diagrams in ReadTheDocs
+published documentation.
+
+
+Installation
+============
+
+    sudo pip3 install plantweb
 
 
 Documentation
