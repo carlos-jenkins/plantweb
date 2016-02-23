@@ -23,6 +23,10 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
+from traceback import format_exc
+from os.path import isfile, abspath
+
+from requests import head
 
 from . import __version__
 
@@ -53,6 +57,31 @@ def validate_args(args):
 
     log.debug('Raw arguments:\n{}'.format(args))
 
+    # Verify source file exists
+    sources = []
+    for src in args.sources:
+        if not isfile(src):
+            log.error('No such file : {}'.format(args.source))
+            exit(1)
+        sources.append(abspath(src))
+    args.sources = sources
+
+    # Check that format and engine compatibility
+    if args.format == 'svg' and args.engine == 'ditaa':
+        log.error('The ditaa engine doens\'t support the svg format')
+        exit(1)
+
+    # Check given server
+    try:
+        response = head(args.server)
+        response.raise_for_status()
+    except:
+        log.debug(format_exc())
+        log.error(
+            'Communication error with the server : {}'.format(args.server)
+        )
+        exit(1)
+
     return args
 
 
@@ -72,7 +101,7 @@ def parse_args(argv=None):
     )
     parser.add_argument(
         '-v', '--verbose',
-        help='Increase verbosity level',
+        help='increase verbosity level',
         default=0,
         action='count'
     )
@@ -80,6 +109,30 @@ def parse_args(argv=None):
         '--version',
         action='version',
         version='PlantUML Client in Python v{}'.format(__version__)
+    )
+
+    parser.add_argument(
+        '--format',
+        default='auto',
+        help='diagram export format',
+        choices=['auto', 'svg', 'png']
+    )
+    parser.add_argument(
+        '--server',
+        default='http://plantuml.com/plantuml/',
+        help='server to use for rendering'
+    )
+    parser.add_argument(
+        '--engine',
+        default='auto',
+        help='engine to use to render diagram',
+        choices=['auto', 'plantuml', 'graphviz', 'ditaa']
+    )
+
+    parser.add_argument(
+        'sources',
+        nargs='+',
+        help='source files to render'
     )
 
     args = parser.parse_args(argv)
