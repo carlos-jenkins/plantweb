@@ -59,7 +59,7 @@ def validate_args(args):
     sources = []
     for src in args.sources:
         if not isfile(src):
-            log.error('No such file : {}'.format(args.source))
+            log.error('No such file : {}'.format(src))
             exit(1)
         sources.append(abspath(src))
     args.sources = sources

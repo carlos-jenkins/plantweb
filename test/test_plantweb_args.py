@@ -24,6 +24,9 @@ See http://pythontesting.net/framework/pytest/pytest-introduction/#fixtures
 from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
+from os import listdir
+from os.path import join, abspath, dirname, normpath
+
 import pytest  # noqa
 
 from plantweb import args
@@ -39,14 +42,21 @@ def teardown_module(module):
 
 def test_args():
 
-    parsed = args.parse_args([])
-    assert parsed.verbose == 0
+    examples_dir = normpath(join(abspath(dirname(__file__)), '../examples/'))
+    sources = [
+        join(examples_dir, src)
+        for src in listdir(examples_dir)
+        if src.endswith('.uml')
+    ]
 
-    parsed = args.parse_args(['-v'])
-    assert parsed.verbose == 1
+    parsed = args.parse_args(sources + ['-vvvv'])
 
-    parsed = args.parse_args(['-vv'])
-    assert parsed.verbose == 2
+    assert parsed.verbose == 4
+    assert parsed.sources == sources
 
-    parsed = args.parse_args(['-vvv'])
-    assert parsed.verbose == 3
+    assert parsed.engine is None
+    assert parsed.format is None
+    assert parsed.server == 'http://plantuml.com/plantuml/'
+
+    assert not parsed.no_cache
+    assert parsed.cache_dir == '~/.cache/plantweb'

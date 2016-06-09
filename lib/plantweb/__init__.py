@@ -22,6 +22,10 @@ plantweb module entry point.
 from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
+from .render import render_file, render
+
 __author__ = 'Carlos Jenkins'
 __email__ = 'carlos@jenkins.co.cr'
 __version__ = '0.1.0'
+
+__all__ = ['render_file', 'render']

@@ -22,6 +22,35 @@ plantweb example 1.
 from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
-import plantweb  # noqa
+from plantweb import render
 
-# Use plantweb in this example
+
+CONTENT = """
+actor Foo1
+boundary Foo2
+control Foo3
+entity Foo4
+database Foo5
+Foo1 -> Foo2 : To boundary
+Foo1 -> Foo3 : To control
+Foo1 -> Foo4 : To entity
+Foo1 -> Foo5 : To database
+"""
+
+
+if __name__ == '__main__':
+
+    print('==> INPUT:')
+    print(CONTENT)
+
+    output = render(
+        CONTENT,
+        engine='plantuml',
+        format='svg',
+        cacheopts={
+            'use_cache': False
+        }
+    )
+
+    print('==> OUTPUT:')
+    print(output)

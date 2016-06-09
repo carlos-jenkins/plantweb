@@ -70,26 +70,30 @@ def determine_engine(content):
 
 
 def render_cached(
-        content, format,
-        server='http://plantuml.com/plantuml/',
+        server, format, content,
         use_cache=True, cache_dir='~/.cache/plantweb'):
     """
     Render given content in the PlantUML server or fetch it from cache.
 
-    :param str content: Content to render with mandatory ``@startxxx`` tags.
+    :param str server: URL to PlantUML server.
     :param str format: File format to render the content. One of the supported
      by the PlantUML server (``svg`` or ``png``).
-    :param str server: URL to PlantUML server.
+    :param str content: Content to render with mandatory ``@startxxx`` tags.
     :param bool use_cache: Use local cache to avoid requesting the server for
      already rendered diagrams.
     :param str cache_dir: Directory to store the cached diagrams.
 
-    :return: The rendered content.
-    :rtype: bytes
+    :return: A tuple of ``(content, sha)`` with the bytes of the rendered
+     content and a string of the sha256 identifying the content for cache.
+     Note that ``sha`` can be None if ``use_cache`` is ``False``.
+    :rtype: tuple
     """
 
     if not use_cache:
-        return plantuml(server, format, content)
+        return (
+            plantuml(server, format, content),
+            None
+        )
 
     sha = sha256(content.encode('utf-8')).hexdigest()
 
@@ -109,10 +113,15 @@ def render_cached(
     with open(cache_file, 'wb') as fd:
         fd.write(output)
 
-    return output
+    return (output, sha)
 
 
-def render(content, engine=None, format=None, server=None, cacheopts=None):
+def render(
+        content,
+        engine=None,
+        format=None,
+        server='http://plantuml.com/plantuml/',
+        cacheopts=None):
     """
     Render given PlantUML, Graphviz or DITAA content.
 
@@ -126,10 +135,12 @@ def render(content, engine=None, format=None, server=None, cacheopts=None):
      ``None``, vector format will always be selected unless the engine doesn't
      supports it.
     :param str server: URL to PlantUML server. This will passed as is to
-     :function:`render_cached`.
+     :func:`render_cached`.
 
-    :return: A tuple of ``(output, format)`` with the bytes of the rendered
-     output and a string with the name of the output format.
+    :return: A tuple of ``(output, format, engine, sha)`` with the bytes of the
+     rendered output, a string with the name of the output format, a string
+     with the name of the engine used or detected and a string of the sha256
+     for identifying the cache file.
     :rtype: tuple
     """
 
@@ -169,9 +180,9 @@ def render(content, engine=None, format=None, server=None, cacheopts=None):
     if cacheopts is None:
         cacheopts = {}
 
-    output = render_cached(content, format, server=server, **cacheopts)
+    output, sha = render_cached(server, format, content, **cacheopts)
 
-    return (output, format)
+    return (output, format, engine, sha)
 
 
 def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
@@ -182,9 +193,9 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
     :param str outfile: Path to output file. If ``None``, the filename will be
      auto-determined and save to current working directory.
     :param dict renderopts: Rendering options (``engine``, ``format`` and
-     ``server``) as in :function:`render`.
+     ``server``) as in :func:`render`.
     :param dict cacheopts: Caching options (``use_cache`` and ``cache_dir``) as
-     in :function:`render`.
+     in :func:`render`.
 
     :return: Path to output file.
     :rtype: str
@@ -198,7 +209,9 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
     if renderopts is None:
         renderopts = {}
 
-    output, format = render(content, cacheopts=cacheopts, **renderopts)
+    output, format, engine, sha = render(
+        content, cacheopts=cacheopts, **renderopts
+    )
 
     # Determine destination file
     if outfile is None:
@@ -215,3 +228,4 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
 
 
 __all__ = ['render_file', 'render']
+__api__ = ['determine_engine', 'render_cached']

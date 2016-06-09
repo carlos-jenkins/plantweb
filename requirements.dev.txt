@@ -1,7 +1,13 @@
+# Style
 flake8
 pep8-naming
+
+# Testing
 pytest
 pytest-cov
+pytest-logging
+
+# Documentation
 sphinx
 sphinx_rtd_theme
 sphinxcontrib-plantuml
