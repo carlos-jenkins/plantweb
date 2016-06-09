@@ -73,6 +73,20 @@ def render_cached(
         content, format,
         server='http://plantuml.com/plantuml/',
         use_cache=True, cache_dir='~/.cache/plantweb'):
+    """
+    Render given content in the PlantUML server or fetch it from cache.
+
+    :param str content: Content to render with mandatory ``@startxxx`` tags.
+    :param str format: File format to render the content. One of the supported
+     by the PlantUML server (``svg`` or ``png``).
+    :param str server: URL to PlantUML server.
+    :param bool use_cache: Use local cache to avoid requesting the server for
+     already rendered diagrams.
+    :param str cache_dir: Directory to store the cached diagrams.
+
+    :return: The rendered content.
+    :rtype: bytes
+    """
 
     if not use_cache:
         return plantuml(server, format, content)
@@ -99,6 +113,25 @@ def render_cached(
 
 
 def render(content, engine=None, format=None, server=None, cacheopts=None):
+    """
+    Render given PlantUML, Graphviz or DITAA content.
+
+    :param str content: Content to render.
+    :param str engine: Engine to use to render the content. One of
+     ``'plantuml'``, ``'graphviz'`` or ``'ditaa'``. If ``None``, the engine
+     will be auto-determined by looking into the content for the ``@startxxxx``
+     tags.
+    :param str format: Format of the rendered content. Raster ``png`` or vector
+     ``svg``. Please note that engine ``ditaa`` can only render to ``png``. If
+     ``None``, vector format will always be selected unless the engine doesn't
+     supports it.
+    :param str server: URL to PlantUML server. This will passed as is to
+     :function:`render_cached`.
+
+    :return: A tuple of ``(output, format)`` with the bytes of the rendered
+     output and a string with the name of the output format.
+    :rtype: tuple
+    """
 
     # Determine engine
     engine_found = determine_engine(content)
@@ -142,6 +175,20 @@ def render(content, engine=None, format=None, server=None, cacheopts=None):
 
 
 def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
+    """
+    Render given PlantUML, Graphviz or DITAA file.
+
+    :param str infile: Path to source file to render.
+    :param str outfile: Path to output file. If ``None``, the filename will be
+     auto-determined and save to current working directory.
+    :param dict renderopts: Rendering options (``engine``, ``format`` and
+     ``server``) as in :function:`render`.
+    :param dict cacheopts: Caching options (``use_cache`` and ``cache_dir``) as
+     in :function:`render`.
+
+    :return: Path to output file.
+    :rtype: str
+    """
 
     # Read source file
     with open(infile, 'rb') as fd:
