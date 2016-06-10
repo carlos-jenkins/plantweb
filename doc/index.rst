@@ -5,9 +5,9 @@
    developer
    plantweb/plantweb
 
-======================
-PlantUML Python Client
-======================
+========
+Plantweb
+========
 
 .. container:: float-right
 
