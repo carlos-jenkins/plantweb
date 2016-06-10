@@ -105,7 +105,7 @@ def render_cached(
     # Use cache if available
     if isfile(cache_file):
         with open(cache_file, 'rb') as fd:
-            return fd.read()
+            return (fd.read(), sha)
 
     # Normal render and save cache
     output = plantuml(server, format, content)

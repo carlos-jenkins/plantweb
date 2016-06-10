@@ -26,6 +26,6 @@ from .render import render_file, render
 
 __author__ = 'Carlos Jenkins'
 __email__ = 'carlos@jenkins.co.cr'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 __all__ = ['render_file', 'render']
