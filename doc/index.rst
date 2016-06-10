@@ -20,8 +20,6 @@ diagrams and complex graphs.
 Plantweb is a Python client for the PlantUML_ server and thus it can render
 PlantUML_, Graphviz_ and Ditaa_ diagrams without the need to install them.
 
-.. currentmodule:: plantweb.render
-
 Plantweb features a local cache that allows to avoid requesting the server for
 already rendered diagrams, speeding up CI of documentation with lots of
 diagrams.
@@ -30,6 +28,8 @@ Finally, being pure Python, non-local rendering, Plantweb is an excellent way
 to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
+.. contents::
+   :local:
 
 .. _PlantUML: http://plantuml.com/
 .. _Graphviz: http://www.graphviz.org/
@@ -130,7 +130,9 @@ Python API
 
 There is 2 main functions, both Python 2.7 and 3.4 compatible:
 
-#. :func:`plantweb.render` allows to render content directly.
+.. currentmodule:: plantweb.render
+
+#. :func:`render` allows to render content directly.
 
    .. code-block:: python
 
@@ -167,7 +169,7 @@ There is 2 main functions, both Python 2.7 and 3.4 compatible:
           print('==> OUTPUT:')
           print(output)
 
-#. :func:`plantweb.render_file` allows to render files.
+#. :func:`render_file` allows to render files.
 
    .. code-block:: python
 
@@ -222,16 +224,11 @@ There is 2 main functions, both Python 2.7 and 3.4 compatible:
           print(outfile)
 
 
-Documentation
-=============
-
-- :doc:`Developer Guide. <developer>`
-- :doc:`Internal Documentation Reference. <plantweb/plantweb>`
-
-
 Development
 ===========
 
+- :doc:`Developer Guide. <developer>`
+- :doc:`Internal Documentation Reference. <plantweb/plantweb>`
 - `Project repository. <https://github.com/carlos-jenkins/plantweb>`_
 
 
