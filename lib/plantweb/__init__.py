@@ -16,7 +16,7 @@
 # under the License.
 
 """
-plantweb module entry point.
+Plantweb module entry point.
 """
 
 from __future__ import unicode_literals, absolute_import

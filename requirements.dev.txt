@@ -9,6 +9,6 @@ pytest-logging
 
 # Documentation
 sphinx
-sphinx_rtd_theme
+guzzle_sphinx_theme
 sphinxcontrib-plantuml
 autoapi

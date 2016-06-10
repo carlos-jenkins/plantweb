@@ -1,5 +1,6 @@
 .. toctree::
    :hidden:
+   :maxdepth: 1
 
    developer
    plantweb/plantweb
@@ -12,7 +13,173 @@ PlantUML Client in Python
 
    .. image:: _static/images/logo.png
 
-Python client for the PlantUML server
+Python client for the PlantUML server.
+
+A command line interface is provided that allows to render PlantUML, Graphviz
+and Ditaa diagrams without the need to install them.
+
+A Python 2.7 and 3.4 API (``render`` and ``render_file``) and a Sphinx
+directive ``uml ::`` is also provided.
+
+Plantweb features a local cache that allows to avoid requesting the server for
+already rendered diagrams, speeding up CI of documentation with lots of
+diagrams.
+
+Finally, being pure Python, non-local rendering, Plantweb is the only way to
+display and render PlantUML, Graphviz and Ditaa diagrams in ReadTheDocs
+published documentation.
+
+
+
+Installation
+============
+
+    sudo pip3 install plantweb
+
+
+Usage
+=====
+
+Command Line Interface
+----------------------
+
+If you have a file named
+
+::
+
+   user@host:~$ plantweb
+
+Complete options:
+
+::
+
+   user@host:~$ plantweb --help
+   usage: plantweb [-h] [-v] [--version]
+                   [--engine {auto,plantuml,graphviz,ditaa}]
+                   [--format {auto,svg,png}] [--server SERVER] [--no-cache]
+                   [--cache-dir CACHE_DIR]
+                   sources [sources ...]
+
+   Python client for the PlantUML server
+
+   positional arguments:
+     sources               source files to render
+
+   optional arguments:
+     -h, --help            show this help message and exit
+     -v, --verbose         increase verbosity level
+     --version             show program's version number and exit
+     --engine {auto,plantuml,graphviz,ditaa}
+                           engine to use to render diagram
+     --format {auto,svg,png}
+                           diagram export format
+     --server SERVER       server to use for rendering
+     --no-cache            do not use cache
+     --cache-dir CACHE_DIR
+                           directory to store cached renders
+
+
+Sphinx Directives
+-----------------
+
+TODO
+
+
+Python API
+----------
+
+There is 2 main functions:
+
+#. :func:`plantweb.render` allows to render content directly.
+
+   .. code-block:: python
+
+      from plantweb import render
+
+
+      CONTENT = """
+      actor Foo1
+      boundary Foo2
+      control Foo3
+      entity Foo4
+      database Foo5
+      Foo1 -> Foo2 : To boundary
+      Foo1 -> Foo3 : To control
+      Foo1 -> Foo4 : To entity
+      Foo1 -> Foo5 : To database
+      """
+
+
+      if __name__ == '__main__':
+
+          print('==> INPUT:')
+          print(CONTENT)
+
+          output = render(
+              CONTENT,
+              engine='plantuml',
+              format='svg',
+              cacheopts={
+                  'use_cache': False
+              }
+          )
+
+          print('==> OUTPUT:')
+          print(output)
+
+#. :func:`plantweb.render_file` allows to render files.
+
+   .. code-block:: python
+
+      from plantweb import render_file
+
+
+      CONTENT = """
+      digraph finite_state_machine {
+          rankdir=LR;
+          size="8,5"
+          node [shape = doublecircle]; LR_0 LR_3 LR_4 LR_8;
+          node [shape = circle];
+          LR_0 -> LR_2 [ label = "SS(B)" ];
+          LR_0 -> LR_1 [ label = "SS(S)" ];
+          LR_1 -> LR_3 [ label = "S($end)" ];
+          LR_2 -> LR_6 [ label = "SS(b)" ];
+          LR_2 -> LR_5 [ label = "SS(a)" ];
+          LR_2 -> LR_4 [ label = "S(A)" ];
+          LR_5 -> LR_7 [ label = "S(b)" ];
+          LR_5 -> LR_5 [ label = "S(a)" ];
+          LR_6 -> LR_6 [ label = "S(b)" ];
+          LR_6 -> LR_5 [ label = "S(a)" ];
+          LR_7 -> LR_8 [ label = "S(b)" ];
+          LR_7 -> LR_5 [ label = "S(a)" ];
+          LR_8 -> LR_6 [ label = "S(b)" ];
+          LR_8 -> LR_5 [ label = "S(a)" ];
+      }
+      """
+
+
+      if __name__ == '__main__':
+
+          infile = 'mygraph.dot'
+          with open(infile, 'wb') as fd:
+              fd.write(CONTENT.encode('utf-8'))
+
+          print('==> INPUT FILE:')
+          print(infile)
+
+          outfile = render_file(
+              infile,
+              renderopts={
+                  'engine': 'graphviz',
+                  'format': 'png'
+              },
+              cacheopts={
+                  'use_cache': False
+              }
+          )
+
+          print('==> OUTPUT FILE:')
+          print(outfile)
 
 
 Documentation
@@ -26,6 +193,14 @@ Development
 ===========
 
 - `Project repository. <https://github.com/carlos-jenkins/plantweb>`_
+
+
+TODO
+====
+
+- Given the fact that we can render Graphviz we could monkey patch the
+  ``sphinx.ext.graphviz`` to call Plantweb API instead of executing ``dot``.
+  Same for ``sphinx.ext.inheritance_diagram`` that also uses Graphviz.
 
 
 License
@@ -47,3 +222,7 @@ License
    KIND, either express or implied.  See the License for the
    specific language governing permissions and limitations
    under the License.
+
+Logo derived from work by VisciousSpeed_ under Public Domain.
+
+.. _VisciousSpeed: https://openclipart.org/detail/126331/plant-and-vase-planter

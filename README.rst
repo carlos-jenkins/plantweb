@@ -19,12 +19,6 @@ display and render PlantUML, Graphviz and Ditaa diagrams in ReadTheDocs
 published documentation.
 
 
-Installation
-============
-
-    sudo pip3 install plantweb
-
-
 Documentation
 =============
 

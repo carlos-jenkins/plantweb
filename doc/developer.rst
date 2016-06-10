@@ -10,18 +10,19 @@ Developer Guide
 Setup Development Environment
 =============================
 
-#. Install ``pip`` and ``tox``:
+#. Install ``pip3`` and ``tox``:
 
    ::
 
-      sudo apt-get install python-pip
-      sudo pip install tox
+      wget https://bootstrap.pypa.io/get-pip.py
+      sudo python3 get-pip.py
+      sudo pip3 install tox
 
 #. Configure git pre-commit hook:
 
    ::
 
-      sudo pip install flake8 pep8-naming
+      sudo pip3 install flake8 pep8-naming
       flake8 --install-hook
       git config flake8.strict true
 
@@ -53,3 +54,11 @@ Running Test Suite
 ::
 
    tox -e py27,py34
+
+
+Running Coverage
+================
+
+::
+
+   tox -e coverage
