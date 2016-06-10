@@ -5,30 +5,36 @@
    developer
    plantweb/plantweb
 
-=========================
-PlantUML Client in Python
-=========================
+======================
+PlantUML Python Client
+======================
 
 .. container:: float-right
 
    .. image:: _static/images/logo.png
 
-Python client for the PlantUML server.
+Plantweb is a project that provides a command line interface, Sphinx
+directives and API that allows to render powerful plain text UML and ASCII
+diagrams and complex graphs.
 
-A command line interface is provided that allows to render PlantUML, Graphviz
-and Ditaa diagrams without the need to install them.
+Plantweb is a Python client for the PlantUML_ server and thus it can render
+PlantUML_, Graphviz_ and Ditaa_ diagrams without the need to install them.
 
-A Python 2.7 and 3.4 API (``render`` and ``render_file``) and a Sphinx
-directive ``uml ::`` is also provided.
+.. currentmodule:: plantweb.render
 
 Plantweb features a local cache that allows to avoid requesting the server for
 already rendered diagrams, speeding up CI of documentation with lots of
 diagrams.
 
-Finally, being pure Python, non-local rendering, Plantweb is the only way to
-display and render PlantUML, Graphviz and Ditaa diagrams in ReadTheDocs
+Finally, being pure Python, non-local rendering, Plantweb is an excellent way
+to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
+
+.. _PlantUML: http://plantuml.com/
+.. _Graphviz: http://www.graphviz.org/
+.. _Ditaa: http://ditaa.sourceforge.net/
+.. _ReadTheDocs: http://readthedocs.org/
 
 
 Installation
@@ -43,11 +49,45 @@ Usage
 Command Line Interface
 ----------------------
 
-If you have a file named
+If the content of your file is wrapped by ``@startxxx``, ``@endxxx`` then
+Plantweb is capable of determining the engine to use.
+
+Options are:
+
+===============  =============  ========
+    Opening         Closure      Engine
+===============  =============  ========
+``@startuml``    ``@enduml``    plantuml
+``@startdot``    ``@enddot``    graphviz
+``@startditaa``  ``@endditaa``  ditaa
+===============  =============  ========
+
+For example, to render the following Graphviz file ``mydotfile.dot``:
 
 ::
 
-   user@host:~$ plantweb
+   @startdot
+   digraph one_node_graph {
+      node1 -> node2 -> node3
+   }
+   @enddot
+
+You can render the above file with:
+
+::
+
+   user@host:~$ plantweb mydotfile.dot
+
+.. note::
+
+   File extensions are irrelevant for Plantweb.
+
+If for some reason your files lack the ``@startxxx/@endxxx`` wrapper you can
+still render the file by specifying the engine:
+
+::
+
+   user@host:~$ plantweb --engine=graphviz unwrappeddotfile.dot
 
 Complete options:
 
@@ -88,7 +128,7 @@ TODO
 Python API
 ----------
 
-There is 2 main functions:
+There is 2 main functions, both Python 2.7 and 3.4 compatible:
 
 #. :func:`plantweb.render` allows to render content directly.
 

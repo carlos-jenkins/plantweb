@@ -227,5 +227,4 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
     return outfile
 
 
-__all__ = ['render_file', 'render']
-__api__ = ['determine_engine', 'render_cached']
+__all__ = ['render_file', 'render', 'render_cached', 'determine_engine']

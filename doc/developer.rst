@@ -39,7 +39,7 @@ the ``webdev`` package:
 
 ::
 
-   sudo pip install webdev
+   sudo pip3 install webdev
 
 So a development web server can serve any location like this:
 
