@@ -62,7 +62,7 @@ Options are:
 ``@startditaa``  ``@endditaa``  ditaa
 ===============  =============  ========
 
-For example, to render the following Graphviz file ``mydotfile.dot``:
+For example, the following Graphviz file ``mydotfile.dot``:
 
 ::
 
@@ -128,7 +128,7 @@ TODO
 Python API
 ----------
 
-There is 2 main functions, both Python 2.7 and 3.4 compatible:
+There are 2 main functions, both Python 2.7 and 3.4 compatible:
 
 .. currentmodule:: plantweb.render
 

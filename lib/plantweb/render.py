@@ -191,7 +191,7 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
 
     :param str infile: Path to source file to render.
     :param str outfile: Path to output file. If ``None``, the filename will be
-     auto-determined and save to current working directory.
+     auto-determined and saved to the current working directory.
     :param dict renderopts: Rendering options (``engine``, ``format`` and
      ``server``) as in :func:`render`.
     :param dict cacheopts: Caching options (``use_cache`` and ``cache_dir``) as
