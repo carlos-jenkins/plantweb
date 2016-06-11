@@ -123,7 +123,7 @@ Complete options:
 .. currentmodule:: plantweb.render
 
 If not specified, the options defined in :data:`DEFAULT_CONFIG` will be used.
-This default configuration can be overriden by creating a json file with the
+This default configuration can be overridden by creating a JSON file with the
 overrides in ``~/.plantwebrc``.
 
 For example:
@@ -248,7 +248,7 @@ PlantUML Server
 
 If you require:
 
-- Garanteed uptime.
+- Guaranteed uptime.
 - To render confidential diagrams.
 - To speed up rendering in your intranet.
 - Or you simply want to be nice and unload the public server.
