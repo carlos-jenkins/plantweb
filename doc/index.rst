@@ -13,8 +13,8 @@ Plantweb
 
    .. image:: _static/images/logo.png
 
-Plantweb is a project that provides a command line interface, Sphinx
-directives and API that allows to render powerful plain text UML and ASCII
+Plantweb is a project that provides a command line interface, Sphinx directives
+and an API that allows to render powerful plain text UML diagrams, ASCII
 diagrams and complex graphs.
 
 It is a Python client for the PlantUML_ server and thus it can render
@@ -28,13 +28,13 @@ Finally, being pure Python, non-local rendering, Plantweb is an excellent way
 to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
-.. contents::
-   :local:
-
 .. _PlantUML: http://plantuml.com/
 .. _Graphviz: http://www.graphviz.org/
 .. _Ditaa: http://ditaa.sourceforge.net/
 .. _ReadTheDocs: http://readthedocs.org/
+
+.. contents::
+   :local:
 
 
 Installation
