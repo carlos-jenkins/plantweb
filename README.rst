@@ -17,7 +17,6 @@ Finally, being pure Python, non-local rendering, Plantweb is an excellent way
 to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
-
 .. _PlantUML: http://plantuml.com/
 .. _Graphviz: http://www.graphviz.org/
 .. _Ditaa: http://ditaa.sourceforge.net/

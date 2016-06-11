@@ -23,6 +23,8 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
+from json import loads
+from copy import deepcopy
 from hashlib import sha256
 from os.path import basename, splitext, isfile, expanduser, join
 
@@ -41,6 +43,42 @@ WRAP_STR = {
 Map between the name of the engine and the wrap string used in the
 ``@startXXX`` directive.
 """
+
+
+DEFAULT_CONFIG = {
+    'engine': 'plantuml',
+    'format': 'svg',
+    'server': 'http://plantuml.com/plantuml/',
+    'use_cache': True,
+    'cache_dir': '~/.cache/plantweb'
+}
+"""
+Default configuration for plantweb.
+
+The default engine will be used only when the engine was unset and it was
+unable to be auto-determined.
+
+This default configuration can be overriden by creating a json file with the
+overrides in ``~/.plantwebrc``.
+"""
+
+
+def read_defaults(cached=True):
+    """
+    """
+    if cached and hasattr(read_defaults, 'cache'):
+        return read_defaults.cache
+
+    defaults = deepcopy(DEFAULT_CONFIG)
+
+    rcfile = expanduser('~/.plantwebrc')
+    if isfile(rcfile):
+        with open(rcfile, 'r') as fd:
+            user_defaults = loads(fd.read())
+            defaults.update(user_defaults)
+
+    read_defaults.cache = defaults
+    return defaults
 
 
 def determine_engine(content):
@@ -71,7 +109,7 @@ def determine_engine(content):
 
 def render_cached(
         server, format, content,
-        use_cache=True, cache_dir='~/.cache/plantweb'):
+        use_cache=None, cache_dir=None):
     """
     Render given content in the PlantUML server or fetch it from cache.
 
@@ -80,8 +118,9 @@ def render_cached(
      by the PlantUML server (``svg`` or ``png``).
     :param str content: Content to render with mandatory ``@startxxx`` tags.
     :param bool use_cache: Use local cache to avoid requesting the server for
-     already rendered diagrams.
-    :param str cache_dir: Directory to store the cached diagrams.
+     already rendered diagrams. If ``None``, the default value will be used.
+    :param str cache_dir: Directory to store the cached diagrams. If ``None``
+     the default value will be used.
 
     :return: A tuple of ``(content, sha)`` with the bytes of the rendered
      content and a string of the sha256 identifying the content for cache.
@@ -89,11 +128,17 @@ def render_cached(
     :rtype: tuple
     """
 
+    if use_cache is None:
+        use_cache = read_defaults()['use_cache']
+
     if not use_cache:
         return (
             plantuml(server, format, content),
             None
         )
+
+    if cache_dir is None:
+        cache_dir = read_defaults()['cache_dir']
 
     sha = sha256(content.encode('utf-8')).hexdigest()
 
@@ -120,7 +165,7 @@ def render(
         content,
         engine=None,
         format=None,
-        server='http://plantuml.com/plantuml/',
+        server=None,
         cacheopts=None):
     """
     Render given PlantUML, Graphviz or DITAA content.
@@ -129,13 +174,13 @@ def render(
     :param str engine: Engine to use to render the content. One of
      ``'plantuml'``, ``'graphviz'`` or ``'ditaa'``. If ``None``, the engine
      will be auto-determined by looking into the content for the ``@startxxxx``
-     tags.
+     tags, and if unable to be auto-determined the default engine will be used.
     :param str format: Format of the rendered content. Raster ``png`` or vector
      ``svg``. Please note that engine ``ditaa`` can only render to ``png``. If
-     ``None``, vector format will always be selected unless the engine doesn't
-     supports it.
+     ``None``, the default formatwill always be selected unless the engine
+     doesn't supports it.
     :param str server: URL to PlantUML server. This will passed as is to
-     :func:`render_cached`.
+     :func:`render_cached`. If ``None`` the default server URL will be used.
 
     :return: A tuple of ``(output, format, engine, sha)`` with the bytes of the
      rendered output, a string with the name of the output format, a string
@@ -167,14 +212,18 @@ def render(
 
     # Case 3: Use a default engine
     else:
+        engine = read_defaults()['engine']
         log.warn(
-            'Unable to determine the engine. Assuming \'plantuml\'...'
+            'Unable to determine the engine. Assuming \'{}\'...'.format(engine)
         )
-        engine = 'plantuml'
 
     # Determine output file format
     if format is None:
-        format = 'svg' if engine != 'ditaa' else 'png'
+        format = read_defaults()['format'] if engine != 'ditaa' else 'png'
+
+    # Determine server
+    if server is None:
+        server = read_defaults()['server']
 
     # Render cached
     if cacheopts is None:
@@ -227,4 +276,12 @@ def render_file(infile, outfile=None, renderopts=None, cacheopts=None):
     return outfile
 
 
-__all__ = ['render_file', 'render', 'render_cached', 'determine_engine']
+__all__ = [
+    'render_file',
+    'render',
+    'render_cached',
+    'determine_engine',
+    'read_defaults',
+    'WRAP_STR',
+    'DEFAULT_CONFIG'
+]

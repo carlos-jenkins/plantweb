@@ -118,6 +118,31 @@ Complete options:
      --cache-dir CACHE_DIR
                            directory to store cached renders
 
+.. currentmodule:: plantweb.render
+
+If not specified, the options defined in :data:`DEFAULT_CONFIG` will be used.
+This default configuration can be overriden by creating a json file with the
+overrides in ``~/.plantwebrc``.
+
+For example:
+
+.. code-block:: json
+
+   {
+       "server": "http://mydomain.com/plantuml/"
+   }
+
+If you require garanteed uptime, to render confidential diagrams, to speed up
+rendering in your intranet or you want to unload the public server please
+consider installing a local PlantUML server in your local network:
+
+    http://plantuml.com/server.html
+
+The **public** PlantUML server is run by a group of volunteers for pure love.
+Please consider donating to the project through Paypal, Patreon or Flattr:
+
+    http://plantuml.com/
+
 
 Sphinx Directives
 -----------------
@@ -129,8 +154,6 @@ Python API
 ----------
 
 There are 2 main functions, both Python 2.7 and 3.4 compatible:
-
-.. currentmodule:: plantweb.render
 
 #. :func:`render` allows to render content directly.
 

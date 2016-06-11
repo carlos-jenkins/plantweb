@@ -147,3 +147,8 @@ def test_render_cache(tmpdir):
 
         # Assert cache exists
         assert isfile(join(cache_dir, '{}.{}'.format(sha, format)))
+
+
+def test_render_defaultsrc(tmpdir):
+    # FIXME: Test .plantwebrc changes by mocking DEFAULT_CONFIG
+    pass
