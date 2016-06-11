@@ -118,6 +118,8 @@ Complete options:
      --cache-dir CACHE_DIR
                            directory to store cached renders
 
+.. versionadded:: 0.3.0
+
 .. currentmodule:: plantweb.render
 
 If not specified, the options defined in :data:`DEFAULT_CONFIG` will be used.
@@ -132,16 +134,9 @@ For example:
        "server": "http://mydomain.com/plantuml/"
    }
 
-If you require garanteed uptime, to render confidential diagrams, to speed up
-rendering in your intranet or you want to unload the public server please
-consider installing a local PlantUML server in your local network:
+.. seealso::
 
-    http://plantuml.com/server.html
-
-The **public** PlantUML server is run by a group of volunteers for pure love.
-Please consider donating to the project through Paypal, Patreon or Flattr:
-
-    http://plantuml.com/
+   :ref:`server`.
 
 
 Sphinx Directives
@@ -245,6 +240,29 @@ There are 2 main functions, both Python 2.7 and 3.4 compatible:
 
           print('==> OUTPUT FILE:')
           print(outfile)
+
+.. _server:
+
+PlantUML Server
+===============
+
+If you require:
+
+- Garanteed uptime.
+- To render confidential diagrams.
+- To speed up rendering in your intranet.
+- Or you simply want to be nice and unload the public server.
+
+Please consider installing a PlantUML server in your local network or private
+server:
+
+    http://plantuml.com/server.html
+
+The `public PlantUML server <http://plantuml.com/plantuml/>`_ is run by a group
+of volunteers for pure love.
+
+Please consider `donating <http://plantuml.com/>`_ to the project through
+Paypal, Patreon or Flattr.
 
 
 Development

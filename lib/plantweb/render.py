@@ -55,8 +55,10 @@ DEFAULT_CONFIG = {
 """
 Default configuration for plantweb.
 
-The default engine will be used only when the engine was unset and it was
-unable to be auto-determined.
+.. note::
+
+   The default engine will be used only when the engine was unset and it was
+   unable to be auto-determined.
 
 This default configuration can be overriden by creating a json file with the
 overrides in ``~/.plantwebrc``.
@@ -65,6 +67,13 @@ overrides in ``~/.plantwebrc``.
 
 def read_defaults(cached=True):
     """
+    Get the defaults values.
+
+    :param bool cached: Read cached default values or determine them from
+     ``~/.plantwebrc`` if available.
+
+    :return: A dictionary like :data:`DEFAULT_CONFIG` with the user defaults.
+    :rtype: dict
     """
     if cached and hasattr(read_defaults, 'cache'):
         return read_defaults.cache
