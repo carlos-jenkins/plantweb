@@ -11,10 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-from os.path import join, dirname, abspath
-
-from plantweb import __version__
 from guzzle_sphinx_theme import html_theme_path
+from plantweb import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -33,7 +31,6 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
-    'sphinxcontrib.plantuml',
     'sphinx.ext.graphviz',
     'autoapi.sphinx'
 ]
@@ -302,10 +299,6 @@ def setup(app):
 autoapi_modules = {
     'plantweb': None
 }
-
-# Configure PlantUML
-plantuml = 'java -jar ' + join(dirname(abspath(__name__)), 'plantuml.8030.jar')
-plantuml_output_format = 'svg'
 
 # Configure Graphviz
 graphviz_output_format = 'svg'

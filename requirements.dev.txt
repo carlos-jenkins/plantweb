@@ -8,7 +8,6 @@ pytest-cov
 pytest-logging
 
 # Documentation
-sphinx
-guzzle_sphinx_theme
-sphinxcontrib-plantuml
-autoapi
+sphinx>=1.4.3
+guzzle_sphinx_theme==0.7.11
+autoapi>=1.3.1
