@@ -16,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
+import os
 from setuptools import setup, find_packages
 
 
@@ -87,5 +88,10 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-    ]
+    ],
+    # Sphinx autodoc cannot extract the documentation of zipped eggs with the
+    # ``.. autodata::`` directive, causing caos in autoapi.
+    # With this, we will disabled zip_safe flag for Readthedocs for correct
+    # autoapi generation.
+    zip_safe=not os.environ.get('READTHEDOCS', None) is not None
 )
