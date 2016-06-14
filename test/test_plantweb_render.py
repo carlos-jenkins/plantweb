@@ -91,7 +91,7 @@ digraph G {
     a2 -> a3;
 }
     """
-    output, format, engine, sha = render(src, engine='graphviz')
+    output, frmt, engine, sha = render(src, engine='graphviz')
     assert b'<title>a1</title>' in output
     assert b'<title>a2</title>' in output
     assert b'<title>a3</title>' in output
@@ -102,7 +102,7 @@ digraph G {
     src = """\
 Bob -> Alice : hello
 """
-    output, format, engine, sha = render(src)
+    output, frmt, engine, sha = render(src)
     assert b'Bob</text>' in output
     assert b'Alice</text>' in output
     assert b'hello</text>' in output
@@ -113,7 +113,7 @@ Bob -> Alice : hello
 Bob -> Alice : hello
 @enduml
 """
-    output, format, engine, sha = render(src, engine='ditaa')
+    output, frmt, engine, sha = render(src, engine='ditaa')
     assert b'Bob</text>' in output
     assert b'Alice</text>' in output
     assert b'hello</text>' in output
