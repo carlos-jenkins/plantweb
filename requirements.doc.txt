@@ -1,0 +1,4 @@
+# Documentation
+sphinx>=1.4.3
+guzzle_sphinx_theme
+autoapi
