@@ -51,10 +51,9 @@ Default configuration for plantweb.
    The default engine will be used only when the engine was unset and it was
    unable to be auto-determined.
 
-This default configuration can be overridden by creating a JSON file with the
-overrides in your git repository root or in your home under ``~/.plantwebrc``.
-
-See also :data:`DEFAULTS_PROVIDERS`.
+To set a different default configuration create a JSON file ``.plantwebrc``
+in your git repository root or in your home, as defined in
+:data:`DEFAULTS_PROVIDERS`.
 """
 
 
