@@ -16,7 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-import os
 from setuptools import setup, find_packages
 
 
@@ -93,5 +92,5 @@ setup(
     # ``.. autodata::`` directive, causing caos in autoapi.
     # With this, we will disabled zip_safe flag for Readthedocs for correct
     # autoapi generation.
-    zip_safe=not os.environ.get('READTHEDOCS', None) is not None
+    zip_safe=False
 )

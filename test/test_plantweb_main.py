@@ -16,7 +16,7 @@
 # under the License.
 
 """
-Test suite for module plantweb.render.
+Test suite for module plantweb.main.
 
 See http://pythontesting.net/framework/pytest/pytest-introduction/#fixtures
 """
@@ -27,18 +27,8 @@ from __future__ import print_function, division
 from os import listdir, getcwd
 from os.path import join, abspath, dirname, normpath, splitext, basename
 
-import pytest  # noqa
-
 from plantweb.main import main
 from plantweb.args import parse_args
-
-
-def setup_module(module):
-    print('setup_module({})'.format(module.__name__))
-
-
-def teardown_module(module):
-    print('teardown_module({})'.format(module.__name__))
 
 
 def find_sources():

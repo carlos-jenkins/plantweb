@@ -27,17 +27,7 @@ from __future__ import print_function, division
 from os import listdir
 from os.path import join, abspath, dirname, normpath
 
-import pytest  # noqa
-
 from plantweb import args
-
-
-def setup_module(module):
-    print('setup_module({})'.format(module.__name__))
-
-
-def teardown_module(module):
-    print('teardown_module({})'.format(module.__name__))
 
 
 def test_args():

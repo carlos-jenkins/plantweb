@@ -22,7 +22,7 @@ plantweb example 1.
 from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
-from plantweb import render
+from plantweb.render import render
 
 
 CONTENT = """

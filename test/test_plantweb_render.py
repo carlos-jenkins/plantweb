@@ -27,17 +27,10 @@ from __future__ import print_function, division
 from os import listdir, getcwd
 from os.path import join, abspath, dirname, normpath, isfile
 
-import pytest  # noqa
+from plantweb import defaults
+from plantweb.render import render_file, render
 
-from plantweb import render_file, render
-
-
-def setup_module(module):
-    print('setup_module({})'.format(module.__name__))
-
-
-def teardown_module(module):
-    print('teardown_module({})'.format(module.__name__))
+from pytest import raises
 
 
 def find_sources():
@@ -80,6 +73,52 @@ def test_render(tmpdir):
         assert isfile(join(cache_dir, '{}.{}'.format(sha, format)))
 
 
+def test_render_forced_and_defaults(monkeypatch):
+
+    # Monkey path providers to use just known defaults
+    monkeypatch.setattr(
+        defaults,
+        'DEFAULTS_PROVIDERS',
+        [defaults.DEFAULTS_PROVIDERS[0]]
+    )
+    # Force reload of defaults
+    defaults.read_defaults(cached=False)
+
+    # Test forced render
+    src = """\
+digraph G {
+    a1 -> a2;
+    a2 -> a3;
+}
+    """
+    output, format, engine, sha = render(src, engine='graphviz')
+    assert b'<title>a1</title>' in output
+    assert b'<title>a2</title>' in output
+    assert b'<title>a3</title>' in output
+    assert b'<title>a4</title>' not in output
+    assert b'Syntax Error' not in output
+
+    # Test default engine
+    src = """\
+Bob -> Alice : hello
+"""
+    output, format, engine, sha = render(src)
+    assert b'Bob</text>' in output
+    assert b'Alice</text>' in output
+    assert b'hello</text>' in output
+
+    # Test mismatched forced engine
+    src = """\
+@startuml
+Bob -> Alice : hello
+@enduml
+"""
+    output, format, engine, sha = render(src, engine='ditaa')
+    assert b'Bob</text>' in output
+    assert b'Alice</text>' in output
+    assert b'hello</text>' in output
+
+
 def test_render_file(tmpdir):
 
     cache_dir = str(tmpdir.mkdir('cache'))
@@ -104,10 +143,11 @@ def test_render_file(tmpdir):
         print('Output file at {}'.format(outfile))
 
 
-def test_render_cache(tmpdir):
+def test_render_cache(tmpdir, monkeypatch):
 
     cache_dir = str(tmpdir.mkdir('cache'))
     print('Cache directory at: {}'.format(cache_dir))
+    assert not listdir(cache_dir)
 
     sources = find_sources()
 
@@ -118,7 +158,7 @@ def test_render_cache(tmpdir):
         outfile = render_file(
             src,
             cacheopts={
-                'use_cache': False,
+                'use_cache': True,
                 'cache_dir': cache_dir
             }
         )
@@ -129,7 +169,14 @@ def test_render_cache(tmpdir):
         assert isfile(outfile)
         print('Output file at {}'.format(outfile))
 
-    assert not listdir(cache_dir)
+    assert listdir(cache_dir)
+
+    # Re-render using cache
+    from plantweb import render as rendermod
+
+    def plantuml(server, format, content):
+        raise Exception('You shouldn\'t have got here.')
+    monkeypatch.setattr(rendermod, 'plantuml', plantuml)
 
     for src in sources:
 
@@ -148,7 +195,14 @@ def test_render_cache(tmpdir):
         # Assert cache exists
         assert isfile(join(cache_dir, '{}.{}'.format(sha, format)))
 
-
-def test_render_defaultsrc(tmpdir):
-    # FIXME: Test .plantwebrc changes by mocking DEFAULT_CONFIG
-    pass
+    # Test server recall if not use_cache
+    for src in sources:
+        with open(src, 'rb') as fd:
+            with raises(Exception) as e:
+                render(
+                    fd.read().decode('utf-8'),
+                    cacheopts={
+                        'use_cache': False
+                    }
+                )
+            assert str(e.value) == 'You shouldn\'t have got here.'

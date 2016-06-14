@@ -118,26 +118,6 @@ Complete options:
      --cache-dir CACHE_DIR
                            directory to store cached renders
 
-.. versionadded:: 0.3.0
-
-.. currentmodule:: plantweb.render
-
-If not specified, the options defined in :data:`DEFAULT_CONFIG` will be used.
-This default configuration can be overridden by creating a JSON file with the
-overrides in ``~/.plantwebrc``.
-
-For example:
-
-.. code-block:: json
-
-   {
-       "server": "http://mydomain.com/plantuml/"
-   }
-
-.. seealso::
-
-   :ref:`server`.
-
 
 Sphinx Directives
 -----------------
@@ -148,13 +128,15 @@ TODO
 Python API
 ----------
 
+.. currentmodule:: plantweb.render
+
 There are 2 main functions, both Python 2.7 and 3.4 compatible:
 
 #. :func:`render` allows to render content directly.
 
    .. code-block:: python
 
-      from plantweb import render
+      from plantweb.render import render
 
 
       CONTENT = """
@@ -191,7 +173,7 @@ There are 2 main functions, both Python 2.7 and 3.4 compatible:
 
    .. code-block:: python
 
-      from plantweb import render_file
+      from plantweb.render import render_file
 
 
       CONTENT = """
@@ -240,6 +222,33 @@ There are 2 main functions, both Python 2.7 and 3.4 compatible:
 
           print('==> OUTPUT FILE:')
           print(outfile)
+
+
+Overriding Defaults
+===================
+
+.. currentmodule:: plantweb.defaults
+
+.. versionadded:: 0.3.0
+
+If not overridden, the defaults defined in :data:`DEFAULT_CONFIG` will be used.
+
+This configuration can be overridden by creating a JSON file with the overrides
+in your git repository root or in your home under ``~/.plantwebrc``, as defined
+in :data:`DEFAULTS_PROVIDERS`.
+
+For example:
+
+.. code-block:: json
+
+   {
+       "server": "http://mydomain.com/plantuml/"
+   }
+
+.. seealso::
+
+   :ref:`server`.
+
 
 .. _server:
 

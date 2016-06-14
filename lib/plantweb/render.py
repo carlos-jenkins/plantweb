@@ -23,12 +23,12 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
-from json import loads
-from copy import deepcopy
 from hashlib import sha256
+from distutils.dir_util import mkpath
 from os.path import basename, splitext, isfile, expanduser, join
 
 from .plantuml import plantuml
+from .defaults import read_defaults
 
 
 log = logging.getLogger(__name__)
@@ -43,51 +43,6 @@ WRAP_STR = {
 Map between the name of the engine and the wrap string used in the
 ``@startXXX`` directive.
 """
-
-
-DEFAULT_CONFIG = {
-    'engine': 'plantuml',
-    'format': 'svg',
-    'server': 'http://plantuml.com/plantuml/',
-    'use_cache': True,
-    'cache_dir': '~/.cache/plantweb'
-}
-"""
-Default configuration for plantweb.
-
-.. note::
-
-   The default engine will be used only when the engine was unset and it was
-   unable to be auto-determined.
-
-This default configuration can be overriden by creating a json file with the
-overrides in ``~/.plantwebrc``.
-"""
-
-
-def read_defaults(cached=True):
-    """
-    Get the defaults values.
-
-    :param bool cached: Read cached default values or determine them from
-     ``~/.plantwebrc`` if available.
-
-    :return: A dictionary like :data:`DEFAULT_CONFIG` with the user defaults.
-    :rtype: dict
-    """
-    if cached and hasattr(read_defaults, 'cache'):
-        return read_defaults.cache
-
-    defaults = deepcopy(DEFAULT_CONFIG)
-
-    rcfile = expanduser('~/.plantwebrc')
-    if isfile(rcfile):
-        with open(rcfile, 'r') as fd:
-            user_defaults = loads(fd.read())
-            defaults.update(user_defaults)
-
-    read_defaults.cache = defaults
-    return defaults
 
 
 def determine_engine(content):
@@ -148,24 +103,29 @@ def render_cached(
 
     if cache_dir is None:
         cache_dir = read_defaults()['cache_dir']
+    cache_dir = expanduser(cache_dir)
 
     sha = sha256(content.encode('utf-8')).hexdigest()
 
     cache_file = join(
-        expanduser(cache_dir),
-        '{}.{}'.format(sha, format)
+        cache_dir, '{}.{}'.format(sha, format)
     )
 
     # Use cache if available
+    log.debug('Trying to load cache file {} ...'.format(cache_file))
     if isfile(cache_file):
         with open(cache_file, 'rb') as fd:
             return (fd.read(), sha)
+
+    # No cache, make sure the directory is available
+    mkpath(cache_dir)
 
     # Normal render and save cache
     output = plantuml(server, format, content)
 
     with open(cache_file, 'wb') as fd:
         fd.write(output)
+    log.debug('Wrote cache file {} ...'.format(cache_file))
 
     return (output, sha)
 
@@ -290,7 +250,5 @@ __all__ = [
     'render',
     'render_cached',
     'determine_engine',
-    'read_defaults',
-    'WRAP_STR',
-    'DEFAULT_CONFIG'
+    'WRAP_STR'
 ]
