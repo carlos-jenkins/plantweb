@@ -59,7 +59,7 @@ in your git repository root or in your home, as defined in
 
 DEFAULTS_PROVIDERS = [
     'python://plantweb.defaults.DEFAULT_CONFIG',
-    'file://~.plantwebrc',
+    'file://~/.plantwebrc',
     'git://.plantwebrc'
 ]
 """
@@ -121,7 +121,7 @@ def _read_defaults_file(path):
         with open(rcfile, 'r') as fd:
             return loads(fd.read())
 
-    log.warning('Defaults file {} doesn\'t exists'.format(path))
+    log.info('Defaults file {} doesn\'t exists'.format(rcfile))
     return {}
 
 
