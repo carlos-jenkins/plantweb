@@ -231,11 +231,12 @@ Overriding Defaults
 
 .. versionadded:: 0.3.0
 
-If not overridden, the defaults defined in :data:`DEFAULT_CONFIG` will be used.
+The defaults defined in :data:`DEFAULT_CONFIG` will be used unless overridden
+by the user.
 
-This configuration can be overridden by creating a JSON file with the overrides
-in your git repository root or in your home under ``~/.plantwebrc``, as defined
-in :data:`DEFAULTS_PROVIDERS`.
+To set a different default configuration create a JSON file ``.plantwebrc``
+in your git repository root or in your home, as defined in
+:data:`DEFAULTS_PROVIDERS`.
 
 For example:
 

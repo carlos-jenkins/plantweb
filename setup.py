@@ -74,7 +74,7 @@ setup(
         'Python client for the PlantUML server'
     ),
     long_description=read('README.rst'),
-    url='https://plantweb.readthedocs.org/',
+    url='https://plantweb.rtfd.io/',
     keywords='plantweb',
 
     classifiers=[
