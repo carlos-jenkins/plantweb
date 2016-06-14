@@ -2,6 +2,7 @@
    :hidden:
    :maxdepth: 1
 
+   examples
    developer
    plantweb/plantweb
 
@@ -286,6 +287,9 @@ Development
 TODO
 ====
 
+- Currently the Sphinx directive only support inline content. A optional
+  argument to support external content would be nice. Same for a keyword
+  argument that will allows us to also put a literalblock with the source.
 - Given the fact that we can render Graphviz we could monkey patch the
   ``sphinx.ext.graphviz`` to call Plantweb API instead of executing ``dot``.
   Same for ``sphinx.ext.inheritance_diagram`` that also uses Graphviz.

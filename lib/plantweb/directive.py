@@ -19,13 +19,112 @@
 Sphinx directives for rendering PlantUML, Graphviz and Ditaa using Plantweb.
 """
 
+from os.path import join
 from logging import getLogger
+from traceback import format_exc
+from distutils.dir_util import mkpath
+from abc import ABCMeta, abstractmethod
 
+from six import add_metaclass
+from docutils import nodes
+from docutils.parsers.rst.directives.images import Image
 
 from . import defaults
+from .render import render
 
 
 log = getLogger(__name__)
+
+
+@add_metaclass(ABCMeta)
+class Plantweb(Image):
+
+    required_arguments = 0
+    optional_arguments = 0  # Was 1 - Fixme to support loading external content
+    option_spec = Image.option_spec.copy()
+    has_content = True
+
+    def run(self):
+        # Check if file insertion is enabled
+        if not self.state.document.settings.file_insertion_enabled:
+            msg = (
+                'File and URL access deactivated. '
+                'Ignoring directive "{}".'.format(self.name)
+            )
+            warning = nodes.warning(
+                '', self.state_machine.reporter.warning(
+                    '', nodes.literal_block('', msg),
+                    line=self.lineno
+                )
+            )
+            return [warning]
+
+        # Execute plantweb call
+        try:
+            output, frmt, engine, sha = render(
+                '\n'.join(self.content),
+                engine=self._get_engine_name()
+            )
+        except:
+            msg = format_exc()
+            error = nodes.error(
+                '', self.state_machine.reporter.error(
+                    '', nodes.literal_block('', msg),
+                    line=self.lineno
+                )
+            )
+            return [error]
+
+        # Determine filename
+        filename = '{}.{}'.format(sha, frmt)
+        imgpath = join(
+            self.state_machine.document.settings.env.app.builder.outdir,
+            self.state_machine.document.settings.env.app.builder.imagedir,
+            'plantweb'
+        )
+
+        # Create images output folder
+        log.debug('imgpath set to {}'.format(imgpath))
+        mkpath(imgpath)
+
+        # Write content
+        filepath = join(imgpath, filename)
+
+        with open(filepath, 'wb') as fd:
+            fd.write(output)
+
+        log.debug('Wrote image file {}'.format(filepath))
+
+        # Default to align center
+        if 'align' not in self.options:
+            self.options['align'] = 'center'
+
+        # Run Image directive
+
+        from ipdb import set_trace
+        set_trace()
+
+        self.arguments = [filepath]
+        return Image.run(self)
+
+    @abstractmethod
+    def _get_engine_name(self):
+        pass
+
+
+class UmlDirective(Plantweb):
+    def _get_engine_name(self):
+        return 'plantuml'
+
+
+class GraphDirective(Plantweb):
+    def _get_engine_name(self):
+        return 'graphviz'
+
+
+class DiagramDirective(Plantweb):
+    def _get_engine_name(self):
+        return 'ditaa'
 
 
 def defaults_provider():
@@ -73,10 +172,23 @@ def setup(app):
 
     See http://www.sphinx-doc.org/en/stable/extdev/appapi.html#sphinx.application.Sphinx.add_config_value
     """  # noqa
+    # Wee want to override the directives:
+    # - 'graph' from sphinx.ext.graphviz extension.
+    # - 'uml' from sphinxcontrib.plantuml
+    # But Sphinx warns of the override, causing failure is warnings are set
+    # to fail documentation build. So, we go down and use docutils registering
+    # directly instead.
+
     # app.add_directive('uml', UmlDirective)
     # app.add_directive('graph', GraphDirective)
     # app.add_directive('diagram', DiagramDirective)
 
+    from docutils.parsers.rst import directives
+    directives.register_directive('uml', UmlDirective)
+    directives.register_directive('graph', GraphDirective)
+    directives.register_directive('diagram', DiagramDirective)
+
+    # Register the config value to allow to set plantweb defaults in conf.py
     app.add_config_value('plantweb_defaults', {}, 'env')
 
     # Register Plantweb defaults setter
