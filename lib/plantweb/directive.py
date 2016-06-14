@@ -1,0 +1,86 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2016 Carlos Jenkins
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+"""
+Sphinx directives for rendering PlantUML, Graphviz and Ditaa using Plantweb.
+"""
+
+from logging import getLogger
+
+
+from . import defaults
+
+
+log = getLogger(__name__)
+
+
+def defaults_provider():
+    """
+    Defaults provider that allows to register Sphinx user defaults.
+
+    This dummy defaults provider just returns it's attribute ``overrides`` if
+    it exists.
+
+    :return: The dictionary of the form :data:`DEFAULT_CONFIG`.
+    :rtype: dict
+    """
+    return getattr(defaults_provider, 'overrides', {})
+
+
+def builder_inited_handler(app):
+    """
+    We use this event handler to grab user defaults for Plantweb and use them
+    in Plantweb rendering.
+
+    See https://plantweb.readthedocs.io/index.html#overriding-defaults
+
+    This is the handler of the 'builder-inited' event emitted by Sphinx.
+
+        Emitted when the builder object has been created.
+        It is available as app.builder.
+
+    See http://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-builder-inited
+    """  # noqa
+    log.debug('Sphinx overridden Plantweb defaults:')
+    log.debug(app.config.plantweb_defaults)
+
+    # Set overrides in provider
+    defaults_provider.overrides = app.config.plantweb_defaults
+
+    # Register provider with the highest priority
+    provider = 'python://plantweb.directive.defaults_provider'
+    if provider not in defaults.DEFAULTS_PROVIDERS:
+        defaults.DEFAULTS_PROVIDERS.append(provider)
+
+
+def setup(app):
+    """
+    Setup function that makes this module a Sphinx extension.
+
+    See http://www.sphinx-doc.org/en/stable/extdev/appapi.html#sphinx.application.Sphinx.add_config_value
+    """  # noqa
+    # app.add_directive('uml', UmlDirective)
+    # app.add_directive('graph', GraphDirective)
+    # app.add_directive('diagram', DiagramDirective)
+
+    app.add_config_value('plantweb_defaults', {}, 'env')
+
+    # Register Plantweb defaults setter
+    app.connect('builder-inited', builder_inited_handler)
+
+
+__all__ = ['setup', 'builder_inited_handler', 'defaults_provider']

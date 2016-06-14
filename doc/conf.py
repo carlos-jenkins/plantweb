@@ -32,7 +32,8 @@ extensions = [
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
     'sphinx.ext.graphviz',
-    'autoapi.sphinx'
+    'autoapi.sphinx',
+    'plantweb.directive'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -295,9 +296,14 @@ texinfo_documents = [
 def setup(app):
     app.add_stylesheet('styles/custom.css')
 
-# autoapi configuration
+# AutoAPI configuration
 autoapi_modules = {
     'plantweb': None
+}
+
+# Plantweb configuration
+plantweb_defaults = {
+    'use_cache': True
 }
 
 # Configure Graphviz
