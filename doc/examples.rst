@@ -1,9 +1,9 @@
 .. toctree::
    :hidden:
 
-=================
-Plantweb Examples
-=================
+================
+Examples Gallery
+================
 
 .. contents::
    :local:

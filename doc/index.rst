@@ -21,6 +21,8 @@ diagrams and complex graphs.
 It is a Python client for the PlantUML_ server and thus it can render
 PlantUML_, Graphviz_ and Ditaa_ diagrams without the need to install them.
 
+Check out the :doc:`Examples Gallery <examples>`.
+
 Plantweb features a local cache that prevents requesting the server for
 previously rendered diagrams, speeding up building documentation with lots of
 diagrams.
