@@ -126,27 +126,35 @@ Complete options:
 Sphinx Directives
 -----------------
 
+.. versionadded:: 0.4.0
+
 Plantweb provides 3 Sphinx_ directives for rendering diagrams using the
 PlantUML server:
 
 ``.. uml::``
-    Allows to render the content using PlantUML_ engine. Note that this
-    directive overrides the one provided by ``sphinxcontrib.plantuml``.
+    Allows to render the content using PlantUML_ engine.
+
+    .. warning::
+
+       This directive overrides the one provided by ``sphinxcontrib.plantuml``.
 
 ``.. graph::``
-    Allows to render the content using Graphviz_ engine. Note that this
-    directive overrides the one provided by ``sphinx.ext.graphviz``.
+    Allows to render the content using Graphviz_ engine.
+
+    .. warning::
+
+       This directive overrides the one provided by ``sphinx.ext.graphviz``.
 
 ``.. diagram::``
     Allows to render the content using Ditaa_ engine.
 
 .. note::
 
-   When using the directives it is NOT recommended to use the ``@startxxx`` /
-   ``@endxxx``.
+   When using the directives it is NOT recommended nor required to use the
+   ``@startxxx`` / ``@endxxx`` tags.
 
 To enable the directives add ``'plantweb.directive'`` to your extensions in
-your ``conf.py``:
+your Sphinx's ``conf.py``:
 
 .. code-block:: python
 
@@ -156,7 +164,7 @@ your ``conf.py``:
    ]
 
 If you want to configure the extension you can create the variable
-``plantweb_defaults`` in your ``conf.py``:
+``plantweb_defaults`` in your Sphinx's ``conf.py``:
 
 .. code-block:: python
 
@@ -313,10 +321,10 @@ If you require:
 Please consider installing a PlantUML server in your local network or private
 server:
 
-    http://plantuml.com/server.html
+- http://plantuml.com/server.html
 
-The `public PlantUML server <http://plantuml.com/plantuml/>`_ is run by a group
-of volunteers for pure love.
+The `public PlantUML server <http://plantuml.com/plantuml/>`_ used by Plantweb
+by default is run by a group of volunteers for pure love.
 
 Please consider `donating <http://plantuml.com/>`_ to the project through
 Paypal, Patreon or Flattr.
