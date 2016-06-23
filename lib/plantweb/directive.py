@@ -21,9 +21,9 @@ Sphinx directives for rendering PlantUML, Graphviz and Ditaa using Plantweb.
 
 from logging import getLogger
 from traceback import format_exc
-from os.path import join, relpath
 from distutils.dir_util import mkpath
 from abc import ABCMeta, abstractmethod
+from os.path import join, relpath, dirname
 
 from six import add_metaclass
 from docutils import nodes
@@ -75,8 +75,9 @@ class Plantweb(Image):
             )
             return [error]
 
-        # Fetch builder
-        builder = self.state_machine.document.settings.env.app.builder
+        # Fetch builder and environment objects
+        env = self.state_machine.document.settings.env
+        builder = env.app.builder
 
         # Determine filename
         filename = '{}.{}'.format(sha, frmt)
@@ -98,8 +99,10 @@ class Plantweb(Image):
         if 'align' not in self.options:
             self.options['align'] = 'center'
 
-        # Determine relative path to image from src directory
-        filepath_relative = relpath(filepath, builder.srcdir)
+        # Determine relative path to image from src document
+        document_dir = dirname(env.doc2path(env.docname))
+        filepath_relative = relpath(filepath, document_dir)
+        log.debug('Image relative path {}'.format(filepath_relative))
 
         # Run Image directive
         self.arguments = [filepath_relative]
