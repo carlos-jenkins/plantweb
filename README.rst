@@ -29,6 +29,43 @@ Documentation
     https://plantweb.readthedocs.io/
 
 
+Changelog
+=========
+
+0.4.0 (Unreleased)
+------------------
+
+**New**
+
+- Added a set of Sphinx directives ``uml``, ``graph`` and ``diagram``.
+
+0.3.0
+-----
+
+**New**
+
+- Default options can now be overriden with a ``.plantwebrc`` file in the user
+  home or in the git repository root.
+
+0.2.0
+-----
+
+**Fixes**
+
+- Fixed bug when calling ``render_cache`` that returned a non-tuple.
+
+**Changes**
+
+- Documentation was greatly improved.
+
+0.1.0
+-----
+
+**New**
+
+- Initial public release.
+
+
 License
 =======
 
