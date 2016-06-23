@@ -14,9 +14,9 @@ Plantweb
 
    .. image:: _static/images/logo.png
 
-Plantweb is a project that provides a command line interface, Sphinx directives
-and an API that allows to render powerful plain text UML diagrams, ASCII
-diagrams and complex graphs.
+Plantweb is a project that provides a command line interface, Sphinx_
+directives and an API that allows to render powerful plain text UML diagrams,
+ASCII diagrams and complex graphs.
 
 It is a Python client for the PlantUML_ server and thus it can render
 PlantUML_, Graphviz_ and Ditaa_ diagrams without the need to install them.
@@ -31,6 +31,7 @@ Finally, being pure Python, non-local rendering, Plantweb is an excellent way
 to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
+.. _Sphinx: http://www.sphinx-doc.org/
 .. _PlantUML: http://plantuml.com/
 .. _Graphviz: http://www.graphviz.org/
 .. _Ditaa: http://ditaa.sourceforge.net/
@@ -125,7 +126,49 @@ Complete options:
 Sphinx Directives
 -----------------
 
-TODO
+Plantweb provides 3 Sphinx_ directives for rendering diagrams using the
+PlantUML server:
+
+``.. uml::``
+    Allows to render the content using PlantUML_ engine. Note that this
+    directive overrides the one provided by ``sphinxcontrib.plantuml``.
+
+``.. graph::``
+    Allows to render the content using Graphviz_ engine. Note that this
+    directive overrides the one provided by ``sphinx.ext.graphviz``.
+
+``.. diagram::``
+    Allows to render the content using Ditaa_ engine.
+
+.. note::
+
+   When using the directives it is NOT recommended to use the ``@startxxx`` /
+   ``@endxxx``.
+
+To enable the directives add ``'plantweb.directive'`` to your extensions in
+your ``conf.py``:
+
+.. code-block:: python
+
+   extensions = [
+       # ... More extensions,
+       'plantweb.directive'
+   ]
+
+If you want to configure the extension you can create the variable
+``plantweb_defaults`` in your ``conf.py``:
+
+.. code-block:: python
+
+   # Plantweb configuration
+   plantweb_defaults = {
+       'server': 'http://myserver.com/plantuml/'
+   }
+
+Please note that the above configuration will have the higher priority as
+explained in :ref:`defaults`. Nevertheless the defaults resolution mechanism
+is still considered, that is, the ``.plantwebrc`` files will still override
+other keys if present.
 
 
 Python API
@@ -226,6 +269,7 @@ There are 2 main functions, both Python 2.7 and 3.4 compatible:
           print('==> OUTPUT FILE:')
           print(outfile)
 
+.. _defaults:
 
 Overriding Defaults
 ===================
