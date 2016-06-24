@@ -32,6 +32,13 @@ Documentation
 Changelog
 =========
 
+0.5.0 (Unreleased)
+------------------
+
+**New**
+
+- Sphinx directives now support passing a source file as argument.
+
 0.4.0
 -----
 

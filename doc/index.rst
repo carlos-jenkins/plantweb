@@ -455,9 +455,6 @@ Development
 TODO
 ====
 
-- Currently the Sphinx directive only support inline content. A optional
-  argument to support external content would be nice. Same for a keyword
-  argument that will allows us to also put a literalblock with the source.
 - We should be able to monkey patch ``sphinx.ext.inheritance_diagram`` that
   also uses Graphviz to use Plantweb.
 

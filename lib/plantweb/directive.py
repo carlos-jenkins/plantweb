@@ -23,7 +23,7 @@ from logging import getLogger
 from traceback import format_exc
 from distutils.dir_util import mkpath
 from abc import ABCMeta, abstractmethod
-from os.path import join, relpath, dirname
+from os.path import join, relpath, dirname, isfile, isabs
 
 from six import add_metaclass
 from docutils import nodes
@@ -39,9 +39,12 @@ log = getLogger(__name__)
 
 @add_metaclass(ABCMeta)
 class Plantweb(Image):
+    """
+    FIXME: Document.
+    """
 
     required_arguments = 0
-    optional_arguments = 0  # Was 1 - Fixme to support loading external content
+    optional_arguments = 1
     option_spec = {
         'alt': directives.unchanged,
         'align': lambda arg: directives.choice(
@@ -56,7 +59,7 @@ class Plantweb(Image):
         if not self.state.document.settings.file_insertion_enabled:
             msg = (
                 'File and URL access deactivated. '
-                'Ignoring directive "{}".'.format(self.name)
+                'Ignoring directive "{}".'.format(self._get_directive_name())
             )
             warning = nodes.warning(
                 '', self.state_machine.reporter.warning(
@@ -66,10 +69,52 @@ class Plantweb(Image):
             )
             return [warning]
 
+        # Check that no content and argument are used at the same time
+        if self.arguments and self.content:
+            warning = self.state_machine.reporter.warning(
+                '{} directive cannot have both content and a filename '
+                'argument.'.format(self._get_directive_name()),
+                line=self.lineno
+            )
+            return [warning]
+
+        # Fetch builder and environment objects
+        env = self.state_machine.document.settings.env
+        builder = env.app.builder
+
+        # Determine document directory
+        document_dir = dirname(env.doc2path(env.docname))
+
+        # Load content to render
+        if not self.arguments:
+            content = self.content
+        else:
+            # Source file should be relative to document, or absolute to
+            # configuration directory.
+            srcfile = self.arguments[0]
+
+            if isabs(srcfile):
+                srcpath = join(env.confdir, srcfile)
+            else:
+                srcpath = join(document_dir, srcfile)
+
+            if not isfile(srcpath):
+                warning = self.state_machine.reporter.warning(
+                    '{} directive cannot find file {}'.format(
+                        self._get_directive_name(),
+                        srcfile
+                    ),
+                    line=self.lineno
+                )
+                return [warning]
+
+            with open(srcpath, 'rb') as fd:
+                content = fd.read().decode('utf-8')
+
         # Execute plantweb call
         try:
             output, frmt, engine, sha = render(
-                '\n'.join(self.content),
+                '\n'.join(content),
                 engine=self._get_engine_name()
             )
         except:
@@ -81,10 +126,6 @@ class Plantweb(Image):
                 )
             )
             return [error]
-
-        # Fetch builder and environment objects
-        env = self.state_machine.document.settings.env
-        builder = env.app.builder
 
         # Determine filename
         filename = '{}.{}'.format(sha, frmt)
@@ -106,8 +147,7 @@ class Plantweb(Image):
         if 'align' not in self.options:
             self.options['align'] = 'center'
 
-        # Determine relative path to image from src document
-        document_dir = dirname(env.doc2path(env.docname))
+        # Determine relative path to image from source document directory
         filepath_relative = relpath(filepath, document_dir)
         log.debug('Image relative path {}'.format(filepath_relative))
 
@@ -119,20 +159,48 @@ class Plantweb(Image):
     def _get_engine_name(self):
         pass
 
+    @abstractmethod
+    def _get_directive_name(self):
+        pass
+
 
 class UmlDirective(Plantweb):
+    """
+    Specialized ``uml`` directive for Plantweb ``Plantweb`` engine.
+
+    See :class:`Plantweb`.
+    """
     def _get_engine_name(self):
         return 'plantuml'
 
+    def _get_directive_name(self):
+        return 'uml'
+
 
 class GraphDirective(Plantweb):
+    """
+    Specialized ``graph`` directive for Plantweb ``graphviz`` engine.
+
+    See :class:`Plantweb`.
+    """
     def _get_engine_name(self):
         return 'graphviz'
 
+    def _get_directive_name(self):
+        return 'graph'
+
 
 class DiagramDirective(Plantweb):
+    """
+    Specialized ``diagram`` directive for Plantweb ``ditaa`` engine.
+
+    See :class:`Plantweb`.
+    """
     def _get_engine_name(self):
         return 'ditaa'
+
+    def _get_directive_name(self):
+        return 'diagram'
 
 
 def defaults_provider():
@@ -203,4 +271,7 @@ def setup(app):
     app.connect('builder-inited', builder_inited_handler)
 
 
-__all__ = ['setup', 'builder_inited_handler', 'defaults_provider']
+__all__ = [
+    'Plantweb', 'UmlDirective', 'GraphDirective', 'DiagramDirective',
+    'setup', 'builder_inited_handler', 'defaults_provider'
+]
