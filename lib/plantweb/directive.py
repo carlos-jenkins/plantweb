@@ -27,6 +27,7 @@ from os.path import join, relpath, dirname
 
 from six import add_metaclass
 from docutils import nodes
+from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.images import Image
 
 from . import defaults
@@ -41,7 +42,13 @@ class Plantweb(Image):
 
     required_arguments = 0
     optional_arguments = 0  # Was 1 - Fixme to support loading external content
-    option_spec = Image.option_spec.copy()
+    option_spec = {
+        'alt': directives.unchanged,
+        'align': lambda arg: directives.choice(
+            arg, ('left', 'center', 'right')
+        ),
+        'target': directives.unchanged_required,
+    }
     has_content = True
 
     def run(self):

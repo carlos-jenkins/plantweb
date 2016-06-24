@@ -153,6 +153,112 @@ PlantUML server:
    When using the directives it is NOT recommended nor required to use the
    ``@startxxx`` / ``@endxxx`` tags.
 
+For example:
+
+.. code-block:: rst
+
+   .. uml::
+
+      Alice -> Bob: Authentication Request
+      Bob --> Alice: Authentication Response
+
+      Alice -> Bob: Another authentication Request
+      Alice <-- Bob: another authentication Response
+
+The above will render:
+
+.. uml::
+
+   Alice -> Bob: Authentication Request
+   Bob --> Alice: Authentication Response
+
+   Alice -> Bob: Another authentication Request
+   Alice <-- Bob: another authentication Response
+
+.. seealso::
+
+   Check out the :doc:`examples`.
+
+
+Options
++++++++
+
+``alt``: text
+    Alternate text: a short description of the image, displayed by
+    applications that cannot display images, when the user over the image with
+    the cursor or spoken by applications for visually impaired users.
+
+``align``: "left", "center", or "right"
+    The alignment of the image. It control an image's horizontal alignment,
+    allowing the image to float and have the text flow around it.
+
+    .. warning::
+
+       This behavior could be changed by your theme.
+
+``target``: text (URI or reference name)
+    Makes the image into a hyperlink reference ("clickable"). The option
+    argument may be a URI (relative or absolute), or a reference name with
+    underscore suffix (e.g. ``name_``).
+
+For example:
+
+.. code-block:: rst
+
+   .. uml::
+      :alt: This is a nice UML diagram. Indeed.
+      :align: left
+      :target: #options
+
+      actor Foo1
+      boundary Foo2
+      control Foo3
+      entity Foo4
+      database Foo5
+      Foo1 -> Foo2 : To boundary
+      Foo1 -> Foo3 : To control
+      Foo1 -> Foo4 : To entity
+      Foo1 -> Foo5 : To database
+
+Render as:
+
+.. uml::
+   :alt: This is a nice UML diagram. Indeed.
+   :align: left
+   :target: #options
+
+   actor Foo1
+   boundary Foo2
+   control Foo3
+   entity Foo4
+   database Foo5
+   Foo1 -> Foo2 : To boundary
+   Foo1 -> Foo3 : To control
+   Foo1 -> Foo4 : To entity
+   Foo1 -> Foo5 : To database
+
+.. warning::
+
+   Plantweb directives doesn't have any ``height``, ``width`` or ``scale``
+   options. In this age of responsive design there shouldn't be the need to
+   define presentational values in the content. Also, being diagrams, you
+   should always maximize viewing space.
+
+   If your images overflow, override your theme or use a theme that already
+   supports responsive images:
+
+   .. code-block:: css
+
+      /* Responsive images */
+      object[type="image/svg+xml"], img {
+          max-width: 100%;
+          height: auto;
+      }
+
+
+Sphinx Setup
+++++++++++++
+
 To enable the directives add ``'plantweb.directive'`` to your extensions in
 your Sphinx's ``conf.py``:
 
@@ -298,8 +404,13 @@ For example:
 .. code-block:: json
 
    {
-       "server": "http://mydomain.com/plantuml/"
+       "server": "http://mydomain.com/plantuml/",
+       "cache_dir": "~/.cache/plantweb",
+       "engine": "plantuml",
+       "format": "svg",
+       "use_cache": true
    }
+
 
 .. seealso::
 
