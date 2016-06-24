@@ -31,11 +31,15 @@ Finally, being pure Python, non-local rendering, Plantweb is an excellent way
 to display and render PlantUML_, Graphviz_ and Ditaa_ diagrams in ReadTheDocs_
 published documentation.
 
+In particular, Ditaa_ rendering is particularly usefull when using ASCII
+drawing tools like asciiflow_.
+
 .. _Sphinx: http://www.sphinx-doc.org/
 .. _PlantUML: http://plantuml.com/
 .. _Graphviz: http://www.graphviz.org/
 .. _Ditaa: http://ditaa.sourceforge.net/
 .. _ReadTheDocs: http://readthedocs.org/
+.. _asciiflow: http://asciiflow.com/
 
 .. contents::
    :local:
