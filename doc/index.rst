@@ -465,7 +465,7 @@ TODO
 License
 =======
 
-::
+.. code-block:: text
 
    Copyright (C) 2016 Carlos Jenkins
 
