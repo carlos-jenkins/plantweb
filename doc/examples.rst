@@ -8,6 +8,10 @@ Examples Gallery
 This gallery shows many examples of figures that can be rendered using
 Plantweb. All these examples were taken from the website of each project.
 
+You can check the `source code of this page`_.
+
+.. _source code of this page: https://raw.githubusercontent.com/carlos-jenkins/plantweb/master/doc/examples.rst
+
 For the original source of this examples or for more information and examples
 please visit the website of each project as shown in each section.
 
