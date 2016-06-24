@@ -28,11 +28,23 @@ PlantUML
 
 For more examples and information visit the official website:
 
-   http://plantuml.com/
+- http://plantuml.com/
 
+.. contents::
+   :local:
 
 Sequence
 --------
+
+   A Sequence diagram is an interaction diagram that shows how objects operate
+   with one another and in what order.
+
+   - *Wikipedia, "Sequence Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/sequence.html
+
 
 .. uml::
 
@@ -41,6 +53,8 @@ Sequence
 
    Alice -> Bob: Another authentication Request
    Alice <-- Bob: another authentication Response
+
+-------------------------
 
 .. uml::
 
@@ -53,6 +67,8 @@ Sequence
    Foo1 -> Foo3 : To control
    Foo1 -> Foo4 : To entity
    Foo1 -> Foo5 : To database
+
+-------------------------
 
 .. uml::
 
@@ -78,20 +94,299 @@ Sequence
 Use Case
 --------
 
+   A use case diagram at its simplest is a representation of a user's
+   interaction with the system that shows the relationship between the user and
+   the different use cases in which the user is involved.
+
+   - *Wikipedia, "Use Case Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/usecase.html
+
+
+.. uml::
+
+   :Main Admin: as Admin
+   (Use the application) as (Use)
+
+   User <|-- Admin
+   (Start) <|-- (Use)
+
+-------------------------
+
+.. uml::
+
+   left to right direction
+   skinparam packageStyle rect
+   actor customer
+   actor clerk
+   rectangle checkout {
+     customer -- (checkout)
+     (checkout) .> (payment) : include
+     (help) .> (checkout) : extends
+     (checkout) -- clerk
+   }
+
+
 Class
 -----
+
+   A class diagram is a type of static structure diagram that describes the
+   structure of a system by showing the system's classes, their attributes,
+   operations (or methods), and the relationships among objects.
+
+   - *Wikipedia, "Use Class Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/classes.html
+
+
+.. uml::
+
+   class Foo1 {
+     You can use
+     several lines
+     ..
+     as you want
+     and group
+     ==
+     things together.
+     __
+     You can have as many groups
+     as you want
+     --
+     End of class
+   }
+
+   class User {
+     .. Simple Getter ..
+     + getName()
+     + getAddress()
+     .. Some setter ..
+     + setName()
+     __ private data __
+     int age
+     -- encrypted --
+     String password
+   }
+
+-------------------------
+
+.. uml::
+
+   package "Classic Collections" #DDDDDD {
+     Object <|-- ArrayList
+   }
+
+   package net.sourceforge.plantuml {
+     Object <|-- Demo1
+     Demo1 *- Demo2
+   }
+
+   package foo6 <<Database>> {
+     class Class6
+   }
+
 
 Activity
 --------
 
+   Activity diagrams are graphical representations of workflows of stepwise
+   activities and actions with support for choice, iteration and concurrency. In
+   the Unified Modeling Language, activity diagrams are intended to model both
+   computational and organizational processes (i.e. workflows). Activity
+   diagrams show the overall flow of control.
+
+   - *Wikipedia, "Use Activity Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/activity2.html
+
+
+.. uml::
+
+   start
+   :Hello world;
+   :This is on defined on
+   several **lines**;
+   stop
+
+-------------------------
+
+.. uml::
+
+   start
+   if (condition A) then (yes)
+     :Text 1;
+   elseif (condition B) then (yes)
+     :Text 2;
+     stop
+   elseif (condition C) then (yes)
+     :Text 3;
+   elseif (condition D) then (yes)
+     :Text 4;
+   else (nothing)
+     :Text else;
+   endif
+
+-------------------------
+
+.. uml::
+
+   start
+
+   if (multiprocessor?) then (yes)
+     fork
+       :Treatment 1;
+     fork again
+       :Treatment 2;
+     end fork
+   else (monoproc)
+      partition Partition {
+         :Process 1;
+         :Process 2;
+      }
+     :Treatment 1;
+     :Treatment 2;
+   endif
+
+
 Component
 ---------
+
+   A component diagram depicts how components are wired together to form larger
+   components and or software systems. They are used to illustrate the
+   structure of arbitrarily complex systems.
+
+   - *Wikipedia, "Component Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/component.html
+
+
+.. uml::
+
+   DataAccess - [First Component]
+   [First Component] ..> HTTP : use
+
+-------------------------
+
+.. uml::
+
+   package "Some Group" {
+     HTTP - [First Component]
+     [Another Component]
+   }
+
+   node "Other Groups" {
+     FTP - [Second Component]
+     [First Component] --> FTP
+   }
+
+   cloud {
+     [Example 1]
+   }
+
+
+   database "MySql" {
+     folder "This is my folder" {
+       [Folder 3]
+     }
+     frame "Foo" {
+       [Frame 4]
+     }
+   }
+
+
+   [Another Component] --> [Example 1]
+   [Example 1] --> [Folder 3]
+   [Folder 3] --> [Frame 4]
+
 
 State
 -----
 
+   A state diagram, also called a state machine diagram or statechart diagram,
+   is an illustration of the states an object can attain as well as the
+   transitions between those states.
+
+   - *TechTarget, "State Diagram".*
+
+For detailed explanation see:
+
+- http://plantuml.com/state.html
+
+
+.. uml::
+
+   [*] --> State1
+   State1 --> [*]
+   State1 : this is a string
+   State1 : this is another string
+
+   State1 -> State2
+   State2 --> [*]
+
+-------------------------
+
+.. uml::
+
+   scale 350 width
+   [*] --> NotShooting
+
+   state NotShooting {
+     [*] --> Idle
+     Idle --> Configuring : EvConfig
+     Configuring --> Idle : EvConfig
+   }
+
+   state Configuring {
+     [*] --> NewValueSelection
+     NewValueSelection --> NewValuePreview : EvNewValue
+     NewValuePreview --> NewValueSelection : EvNewValueRejected
+     NewValuePreview --> NewValueSelection : EvNewValueSaved
+
+     state NewValuePreview {
+        State1 -> State2
+     }
+
+   }
+
+
 Object
 ------
+
+   An object diagram is a graph of instances, including objects and data
+   values. A static object diagram is an instance of a class diagram; it shows
+   a snapshot of the detailed state of a system at a point in time. The use of
+   object diagrams is fairly limited, namely to show examples of data
+   structure.
+
+   - *Object Management Group (2001), "UML specification 1.4".*
+
+.. uml::
+
+   object Object01
+   Object01 : name = "Dummy"
+   Object01 : id = 123
+
+   object Object02
+   object Object03
+   object Object04
+   object Object05
+   object Object06
+   object Object07
+   object Object08
+
+   Object01 <|-- Object02
+   Object03 *-- Object04
+   Object05 o-- "4" Object06
+   Object07 .. Object08 : some labels
+
 
 Graphviz
 ========
@@ -106,7 +401,10 @@ Graphviz
 
 For more examples and information visit the official website:
 
-    http://www.graphviz.org/Gallery.php
+- http://www.graphviz.org/Gallery.php
+
+.. contents::
+   :local:
 
 
 Cluster
@@ -289,5 +587,77 @@ Ditaa
 
 For more examples visit the official website:
 
-    http://ditaa.sourceforge.net/
+- http://ditaa.sourceforge.net/
 
+Ditaa rendering is particularly usefull when using ASCII drawing tools like:
+
+- http://asciiflow.com/
+
+
+.. diagram::
+
+   +--------+   +-------+    +-------+
+   |        +---+ ditaa +--> |       |
+   |  Text  |   +-------+    |diagram|
+   |Document|   |!magic!|    |       |
+   |     {d}|   |       |    |       |
+   +---+----+   +-------+    +-------+
+       :                         ^
+       |       Lots of work      |
+       +-------------------------+
+
+-------------------------
+
+.. diagram::
+
+   /--------\   +-------+
+   |cAAA    +---+Version|
+   |  Data  |   |   V3  |
+   |  Base  |   |cRED{d}|
+   |     {s}|   +-------+
+   \---+----/
+
+-------------------------
+
+.. diagram::
+
+   +---+-----+   +----------+
+   | cBLU    |   | {io}     |
+   | Ext-Foo |   |  S-ATA   |
+   |   +-----+   |   cFEA   |
+   |   |cPNK |   +----------+
+   |   | Foo |
+   +---+-----+
+
+-------------------------
+
+.. diagram::
+
+   /-------------+-------------\
+   |cRED RED     |cBLU BLU     |
+   +-------------+-------------+
+   |cGRE GRE     |cPNK PNK     |
+   +-------------+-------------+
+   |cAAA               AAA     |
+   +-------------+-------------+
+   |cCCC               CCC     |
+   +-------------+-------------+
+   |cBLK BLK     |cYEL YEL     |
+   \-------------+-------------/
+
+-------------------------
+
+.. diagram::
+
+   +---------------+                       +----------+
+   | This was      |                       | And it is|
+   | created with  +-----------+---------->+ great!   |
+   | asciiflow.com |           |           |          |
+   +---------------+           |           +----------+
+                               |
+                               |
+       +-----------+           |
+       |           |           |
+       | Awesome!  +<----------+
+       |           |
+       +-----------+
