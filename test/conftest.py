@@ -25,9 +25,13 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 from os import listdir
+from shutil import rmtree
+from tempfile import mkdtemp
+from distutils.dir_util import mkpath
 from os.path import join, abspath, dirname, normpath
 
 from pytest import fixture
+from sphinx.application import Sphinx
 
 
 @fixture(scope='session')
@@ -45,3 +49,45 @@ def sources():
         )
 
     return sources
+
+
+@fixture(scope='function')
+def sphinx(request):
+    # Create workspace for this test
+    workspace = mkdtemp(prefix='platwebtest')
+
+    srcdir = join(workspace, '__source')
+    confdir = join(dirname(__file__), 'sphinxconf')
+    outdir = join(workspace, '_build')
+    doctreedir = join(workspace, '_doctrees')
+
+    mkpath(srcdir)
+
+    # Specify plantweb overrides
+    cachedir = join(workspace, '_cache')  # noqa
+    confoverrides = {
+        'plantweb_defaults': {
+            'server': 'http://plantuml.com/plantuml/',
+            'use_cache': True,
+            'cache_dir': cachedir
+        }
+    }
+
+    def run_sphinx(content, buildername='html'):
+        # Create source index.rst
+        with open(join(srcdir, 'index.rst'), 'wb') as fd:
+            fd.write(content.encode('utf-8'))
+
+        sphinx = Sphinx(
+            srcdir, confdir, outdir, doctreedir, buildername,
+            confoverrides=confoverrides, warningiserror=True
+        )
+        sphinx.build()
+
+    def finalizer():
+        # Destroy build whole Sphinx directory
+        rmtree(workspace)
+
+    request.addfinalizer(finalizer)
+
+    return run_sphinx

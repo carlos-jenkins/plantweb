@@ -57,7 +57,8 @@ class Plantweb(Image):
     }
     has_content = True
 
-    def run(self):
+    def _directive_checks(self):
+
         # Check if file insertion is enabled
         if not self.state.document.settings.file_insertion_enabled:
             msg = (
@@ -80,6 +81,24 @@ class Plantweb(Image):
                 line=self.lineno
             )
             return [warning]
+
+        # Check that at least one was provided
+        if not (self.arguments or self.content):
+            warning = self.state_machine.reporter.warning(
+                '{} directive must have content or a filename '
+                'argument.'.format(self._get_directive_name()),
+                line=self.lineno
+            )
+            return [warning]
+
+        return None
+
+    def run(self):
+
+        # Execute sanity checks
+        warnings = self._directive_checks()
+        if warnings:
+            return warnings
 
         # Fetch builder and environment objects
         env = self.state_machine.document.settings.env

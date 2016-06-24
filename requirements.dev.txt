@@ -6,3 +6,6 @@ pep8-naming
 pytest
 pytest-cov
 pytest-logging
+
+# Directives
+sphinx>=1.4.3
