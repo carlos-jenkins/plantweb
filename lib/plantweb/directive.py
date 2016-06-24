@@ -19,6 +19,9 @@
 Sphinx directives for rendering PlantUML, Graphviz and Ditaa using Plantweb.
 """
 
+from __future__ import unicode_literals, absolute_import
+from __future__ import print_function, division
+
 from logging import getLogger
 from traceback import format_exc
 from distutils.dir_util import mkpath

@@ -25,35 +25,17 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 from os import listdir, getcwd
-from os.path import join, abspath, dirname, normpath, splitext, basename
+from os.path import splitext, basename
 
 from plantweb.main import main
 from plantweb.args import parse_args
 
 
-def find_sources():
-
-    examples_dir = normpath(join(abspath(dirname(__file__)), '../examples/'))
-    sources = [
-        join(examples_dir, src)
-        for src in listdir(examples_dir)
-        if src.endswith('.uml')
-    ]
-
-    if not sources:
-        raise Exception(
-            'No sources found in {}: {}'.format(examples_dir, sources)
-        )
-
-    return sources
-
-
-def test_main(tmpdir):
+def test_main(tmpdir, sources):
 
     cache_dir = str(tmpdir.mkdir('cache'))
     print('Cache directory at: {}'.format(cache_dir))
 
-    sources = find_sources()
     parsed = parse_args(
         sources + ['-vvvv', '--cache-dir', cache_dir]
     )

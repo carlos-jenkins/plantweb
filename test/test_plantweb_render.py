@@ -25,7 +25,7 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 from os import listdir, getcwd
-from os.path import join, abspath, dirname, normpath, isfile
+from os.path import join, isfile
 
 from plantweb import defaults
 from plantweb.render import render_file, render
@@ -33,29 +33,12 @@ from plantweb.render import render_file, render
 from pytest import raises
 
 
-def find_sources():
-
-    examples_dir = normpath(join(abspath(dirname(__file__)), '../examples/'))
-    sources = [
-        join(examples_dir, src)
-        for src in listdir(examples_dir)
-        if src.endswith('.uml')
-    ]
-
-    if not sources:
-        raise Exception(
-            'No sources found in {}: {}'.format(examples_dir, sources)
-        )
-
-    return sources
-
-
-def test_render(tmpdir):
+def test_render(tmpdir, sources):
 
     cache_dir = str(tmpdir.mkdir('cache'))
     print('Cache directory at: {}'.format(cache_dir))
 
-    for src in find_sources():
+    for src in sources:
 
         print('Rendering {} ...'.format(src))
 
@@ -119,12 +102,12 @@ Bob -> Alice : hello
     assert b'hello</text>' in output
 
 
-def test_render_file(tmpdir):
+def test_render_file(tmpdir, sources):
 
     cache_dir = str(tmpdir.mkdir('cache'))
     print('Cache directory at: {}'.format(cache_dir))
 
-    for src in find_sources():
+    for src in sources:
 
         print('Rendering {} ...'.format(src))
 
@@ -143,13 +126,11 @@ def test_render_file(tmpdir):
         print('Output file at {}'.format(outfile))
 
 
-def test_render_cache(tmpdir, monkeypatch):
+def test_render_cache(tmpdir, monkeypatch, sources):
 
     cache_dir = str(tmpdir.mkdir('cache'))
     print('Cache directory at: {}'.format(cache_dir))
     assert not listdir(cache_dir)
-
-    sources = find_sources()
 
     for src in sources:
 
