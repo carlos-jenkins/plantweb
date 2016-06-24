@@ -28,10 +28,8 @@ from plantweb import __version__
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.graphviz',
     'autoapi.sphinx',
     'plantweb.directive'
 ]
@@ -303,7 +301,8 @@ autoapi_modules = {
 
 # Plantweb configuration
 plantweb_defaults = {
-    'use_cache': True
+    'use_cache': True,
+    'format': 'svg',
 }
 
 # Configure Graphviz
