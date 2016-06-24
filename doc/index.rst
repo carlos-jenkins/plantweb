@@ -128,25 +128,24 @@ Sphinx Directives
 
 .. versionadded:: 0.4.0
 
-Plantweb provides 3 Sphinx_ directives for rendering diagrams using the
-PlantUML server:
+Plantweb provides 3 Sphinx_ directives for rendering diagrams:
 
 ``.. uml::``
-    Allows to render the content using PlantUML_ engine.
+    Allows to render the content using the PlantUML_ engine.
 
     .. warning::
 
        This directive overrides the one provided by ``sphinxcontrib.plantuml``.
 
 ``.. graph::``
-    Allows to render the content using Graphviz_ engine.
+    Allows to render the content using the Graphviz_ engine.
 
     .. warning::
 
        This directive overrides the one provided by ``sphinx.ext.graphviz``.
 
 ``.. diagram::``
-    Allows to render the content using Ditaa_ engine.
+    Allows to render the content using the Ditaa_ engine.
 
 .. note::
 
@@ -455,9 +454,8 @@ TODO
 - Currently the Sphinx directive only support inline content. A optional
   argument to support external content would be nice. Same for a keyword
   argument that will allows us to also put a literalblock with the source.
-- Given the fact that we can render Graphviz we could monkey patch the
-  ``sphinx.ext.graphviz`` to call Plantweb API instead of executing ``dot``.
-  Same for ``sphinx.ext.inheritance_diagram`` that also uses Graphviz.
+- We should be able to monkey patch ``sphinx.ext.inheritance_diagram`` that
+  also uses Graphviz to use Plantweb.
 
 
 License
