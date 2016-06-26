@@ -1,5 +1,5 @@
 # Style
-flake8
+flake8==2.6.2
 pep8-naming
 
 # Testing

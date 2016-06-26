@@ -12,6 +12,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from __future__ import unicode_literals, absolute_import
+from __future__ import print_function, division
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -44,9 +47,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PlantwebTest'
-copyright = u'2016, Carlos Jenkins'
-author = u'Carlos Jenkins'
+project = 'PlantwebTest'
+copyright = '2016, Carlos Jenkins'
+author = 'Carlos Jenkins'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -223,8 +226,8 @@ latex_documents = [
     (
         master_doc,
         'PlantwebTest.tex',
-        u'PlantwebTest Documentation',
-        u'Carlos Jenkins',
+        'PlantwebTest Documentation',
+        'Carlos Jenkins',
         'manual'
     ),
 ]
@@ -258,7 +261,7 @@ man_pages = [
     (
         master_doc,
         'plantwebtest',
-        u'PlantwebTest Documentation',
+        'PlantwebTest Documentation',
         [author],
         1
     )
@@ -277,7 +280,7 @@ texinfo_documents = [
     (
         master_doc,
         'PlantwebTest',
-        u'PlantwebTest Documentation',
+        'PlantwebTest Documentation',
         author,
         'PlantwebTest',
         'One line description of project.',

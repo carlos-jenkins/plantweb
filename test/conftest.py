@@ -51,43 +51,58 @@ def sources():
     return sources
 
 
-@fixture(scope='function')
-def sphinx(request):
-    # Create workspace for this test
-    workspace = mkdtemp(prefix='platwebtest')
+class SphinxTest(object):
+    """
+    Run a Sphinx build for testing.
+    """
+    def __init__(self):
+        # Create workspace for this test
+        self.workspace = mkdtemp(prefix='platwebtest')
 
-    srcdir = join(workspace, '__source')
-    confdir = join(dirname(__file__), 'sphinxconf')
-    outdir = join(workspace, '_build')
-    doctreedir = join(workspace, '_doctrees')
+        # Define sphinx folder
+        self.srcdir = join(self.workspace, '__source')
+        self.confdir = join(dirname(__file__), 'sphinxconf')
+        self.outdir = join(self.workspace, '_build')
+        self.doctreedir = join(self.workspace, '_doctrees')
 
-    mkpath(srcdir)
+        mkpath(self.srcdir)
 
-    # Specify plantweb overrides
-    cachedir = join(workspace, '_cache')  # noqa
-    confoverrides = {
-        'plantweb_defaults': {
-            'server': 'http://plantuml.com/plantuml/',
-            'use_cache': True,
-            'cache_dir': cachedir
+        # Specify plantweb overrides
+        self.cachedir = join(self.workspace, '_cache')
+        self.confoverrides = {
+            'plantweb_defaults': {
+                'server': 'http://plantuml.com/plantuml/',
+                'use_cache': True,
+                'cache_dir': self.cachedir
+            }
         }
-    }
 
-    def run_sphinx(content, buildername='html'):
+    def execute(self, content, buildername='html'):
         # Create source index.rst
-        with open(join(srcdir, 'index.rst'), 'wb') as fd:
+        with open(join(self.srcdir, 'index.rst'), 'wb') as fd:
             fd.write(content.encode('utf-8'))
 
         sphinx = Sphinx(
-            srcdir, confdir, outdir, doctreedir, buildername,
-            confoverrides=confoverrides, warningiserror=True
+            self.srcdir,
+            self.confdir,
+            self.outdir,
+            self.doctreedir,
+            buildername,
+            confoverrides=self.confoverrides,
+            warningiserror=True
         )
         sphinx.build()
 
-    def finalizer():
+    def __call__(self, *args, **kwargs):
+        return self.execute(*args, **kwargs)
+
+    def clean(self):
         # Destroy build whole Sphinx directory
-        rmtree(workspace)
+        rmtree(self.workspace)
 
-    request.addfinalizer(finalizer)
 
-    return run_sphinx
+@fixture(scope='function')
+def sphinx(request):
+    sphinxtest = SphinxTest()
+    request.addfinalizer(sphinxtest.clean)
+    return sphinxtest
