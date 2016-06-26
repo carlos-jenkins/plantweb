@@ -179,11 +179,16 @@ class Plantweb(Image):
 
     @abstractmethod
     def _get_engine_name(self):
-        pass
+        """
+        Returns the name of the engine that should be used to render the
+        content.
+        """
 
     @abstractmethod
     def _get_directive_name(self):
-        pass
+        """
+        The name of this directive.
+        """
 
 
 class UmlDirective(Plantweb):
