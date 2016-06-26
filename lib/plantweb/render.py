@@ -87,10 +87,10 @@ def render_cached(
      the default value will be used.
 
     :return: A tuple of ``(content, sha)`` with the bytes of the rendered
-     content and a string of the sha256 identifying the content for cache.
-     Note that ``sha`` can be None if ``use_cache`` is ``False``.
+     content and a sha256 hash string identifying the content.
     :rtype: tuple
     """
+    sha = sha256(content.encode('utf-8')).hexdigest()
 
     if use_cache is None:
         use_cache = read_defaults()['use_cache']
@@ -98,14 +98,12 @@ def render_cached(
     if not use_cache:
         return (
             plantuml(server, format, content),
-            None
+            sha
         )
 
     if cache_dir is None:
         cache_dir = read_defaults()['cache_dir']
     cache_dir = expanduser(cache_dir)
-
-    sha = sha256(content.encode('utf-8')).hexdigest()
 
     cache_file = join(
         cache_dir, '{}.{}'.format(sha, format)
