@@ -109,3 +109,13 @@ def test_directive_argument(sources, sphinx):
 
     # Execute sphinx build
     sphinx('\n'.join(directives))
+
+    # Assert sources and images creation
+    source_files = listdir(sphinx.srcdir)
+    for src in sources:
+        assert basename(src) in source_files
+
+    cached_images = images_in(sphinx.cachedir)
+    copied_images = images_in(join(sphinx.outdir, '_images'))
+    assert len(sources) == len(cached_images)
+    assert sorted(cached_images) == sorted(copied_images)
