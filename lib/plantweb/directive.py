@@ -263,6 +263,11 @@ def builder_inited_handler(app):
     if provider not in defaults.DEFAULTS_PROVIDERS:
         defaults.DEFAULTS_PROVIDERS.append(provider)
 
+    # Force defaults reload
+    from .defaults import read_defaults
+    if hasattr(read_defaults, 'cache'):
+        del read_defaults.cache
+
 
 def setup(app):
     """
