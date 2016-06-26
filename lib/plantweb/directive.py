@@ -295,7 +295,10 @@ def setup(app):
     app.add_config_value('plantweb_defaults', {}, 'env')
 
     # Register Plantweb defaults setter
-    app.connect('builder-inited', builder_inited_handler)
+    # Note: The str() is because:
+    #       - In Python 2.7, Sphinx expects a str, not unicode.
+    #       - In Python 3.4, Sphinx expects a str, not bytes.
+    app.connect(str('builder-inited'), builder_inited_handler)
 
 
 __all__ = [
