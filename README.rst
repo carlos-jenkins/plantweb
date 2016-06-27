@@ -32,8 +32,8 @@ Documentation
 Changelog
 =========
 
-0.5.0 (Unreleased)
-------------------
+1.0.0
+-----
 
 **New**
 
