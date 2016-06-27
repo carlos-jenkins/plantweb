@@ -182,6 +182,28 @@ The above will render:
 
    Check out the :doc:`examples`.
 
+.. versionadded:: 1.0.0
+
+Directives also support specifying a path to a file to load the content.
+
+For example:
+
+.. code-block:: rst
+
+   .. uml:: my_uml_diagram.uml
+
+The above will load the file ``my_uml_diagram.uml`` with the content to be
+rendered.
+
+You may specify a relative path from the current document or you may specify an
+absolute path from where the ``conf.py`` like this:
+
+.. code-block:: rst
+
+   .. uml:: /diagrams/my_uml_diagram.uml
+
+The above will load the file from the Sphinx documentation root.
+
 
 Options
 +++++++
