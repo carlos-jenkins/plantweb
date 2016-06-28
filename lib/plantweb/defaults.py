@@ -78,11 +78,11 @@ Available providers are:
    Will read the file specified. User expansion ``~`` is supported.
 
 ``python://``
-   Will import the given path to a variable or function:
+   Will import the given variable or function:
 
-   - If function, it will be executed without arguments and its result will be
-     returned.
-   - If variable, it must be dictionary similar to :data:`DEFAULT_CONFIG`.
+   - If a function, it will be executed without arguments and its result will
+     be used.
+   - If a variable, it must be a dictionary similar to :data:`DEFAULT_CONFIG`.
 """
 
 
