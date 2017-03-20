@@ -7,5 +7,5 @@
     "project_name": "PlantUML Client in Python",
     "short_description": "Python client for the PlantUML server",
     "year": "2016",
-    "version": "1.0.0"
+    "version": "1.0.1"
 }

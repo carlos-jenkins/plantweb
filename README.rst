@@ -32,6 +32,13 @@ Documentation
 Changelog
 =========
 
+1.0.1
+-----
+
+**Fixes**
+
+- Fix #1 that caused diagrams rendering to fail with a 404 in Windows OSes.
+
 1.0.0
 -----
 
