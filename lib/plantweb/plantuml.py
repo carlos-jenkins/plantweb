@@ -23,8 +23,8 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
-from os.path import join
 from zlib import compress
+from posixpath import join
 
 from requests import get
 from six.moves import range
