@@ -23,14 +23,16 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
+from os import getcwd
 from json import loads
 from copy import deepcopy
 from inspect import isfunction
 from traceback import format_exc
-from shlex import split as shsplit
+from sys import getdefaultencoding
+from subprocess import Popen, PIPE
 from importlib import import_module
+from distutils.spawn import find_executable
 from os.path import isfile, expanduser, join
-from subprocess import check_output, CalledProcessError
 
 
 log = logging.getLogger(__name__)
@@ -92,17 +94,38 @@ def _read_defaults_git(path):
 
     See :data:`DEFAULTS_PROVIDERS` for inner workings.
     """
-    # Determine repository root
-    try:
-        cmd_git = 'git rev-parse --show-toplevel'
-
-        repo_root = check_output(
-            shsplit(cmd_git)
-        ).decode('utf-8').strip()
-
-    except CalledProcessError:
-        log.warning('ERROR: Unable to determine git root directory')
+    # Find git executable
+    git = find_executable('git')
+    if not git:
+        log.debug(
+            'Unable to read defaults from repository. '
+            'git executable not found.'
+        )
         return {}
+
+    # Call git to determine repository root
+    proc = Popen(
+        [git, 'rev-parse', '--show-toplevel'],
+        stdout=PIPE, stderr=PIPE
+    )
+    stdout_raw, stderr_raw = proc.communicate()
+    stdout = stdout_raw.decode(getdefaultencoding())
+    stderr = stderr_raw.decode(getdefaultencoding())
+
+    # Check that we were in a repository
+    if proc.returncode != 0:
+        if 'not a git repository' in stderr.lower():
+            log.debug(
+                'Not in a git repository: {}'.format(getcwd())
+            )
+        else:
+            log.error(
+                'Unable to determine git root directory:\n{}'.format(stderr)
+            )
+        return {}
+
+    # Read defaults file
+    repo_root = stdout.strip()
 
     return _read_defaults_file(
         join(repo_root, path)
@@ -146,7 +169,7 @@ def _read_defaults_python(location):
 
         return entity
 
-    except:
+    except Exception:
         log.debug(format_exc())
         log.warning('Unable to load entity {}'.format(location))
 
