@@ -139,7 +139,7 @@ class Plantweb(Image):
                 content,
                 engine=self._get_engine_name()
             )
-        except:
+        except Exception:
             msg = format_exc()
             error = nodes.error(
                 '', self.state_machine.reporter.error(
@@ -283,7 +283,7 @@ def setup(app):
     # Wee want to override the directives:
     # - 'graph' from sphinx.ext.graphviz extension.
     # - 'uml' from sphinxcontrib.plantuml
-    # But Sphinx warns of the override, causing failure is warnings are set
+    # But Sphinx warns of the override, causing failure if warnings are set
     # to fail documentation build. So, we go down and use docutils registering
     # directly instead.
 
