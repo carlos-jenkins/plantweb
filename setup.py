@@ -86,7 +86,7 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     # Sphinx autodoc cannot extract the documentation of zipped eggs with the
     # ``.. autodata::`` directive, causing caos in autoapi.

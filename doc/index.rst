@@ -315,7 +315,7 @@ Python API
 
 .. currentmodule:: plantweb.render
 
-There are 2 main functions, both Python 2.7 and 3.4 compatible:
+There are 2 main functions, both Python 2.7 and 3.5 compatible:
 
 #. :func:`render` allows to render content directly.
 
