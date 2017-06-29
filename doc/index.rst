@@ -454,8 +454,16 @@ If you require:
 - To speed up rendering in your intranet.
 - Or you simply want to be nice and unload the public server.
 
-Please consider installing a PlantUML server in your local network or private
-server:
+Please consider running a PlantUML server in your local network or private
+server. The easiest way is to do it is using the official
+`PlantUML Docker image <https://hub.docker.com/r/plantuml/plantuml-server/>`_:
+
+.. code-block:: sh
+
+   docker pull plantuml/plantuml-server
+   docker run --detach --publish 8080:8080 plantuml/plantuml-server
+
+For more information about the PlantUML server visit:
 
 - http://plantuml.com/server.html
 
