@@ -109,7 +109,7 @@ class Plantweb(Image):
 
         # Load content to render
         if not self.arguments:
-            content = self.content
+            content = '\n'.join(self.content)
         else:
             # Source file should be relative to document, or absolute to
             # configuration directory.
@@ -136,7 +136,7 @@ class Plantweb(Image):
         # Execute plantweb call
         try:
             output, frmt, engine, sha = render(
-                '\n'.join(content),
+                content,
                 engine=self._get_engine_name()
             )
         except:
