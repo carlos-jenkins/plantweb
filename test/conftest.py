@@ -27,6 +27,7 @@ from __future__ import print_function, division
 from os import listdir
 from shutil import rmtree
 from tempfile import mkdtemp
+from logging import getLogger, NOTSET
 from distutils.dir_util import mkpath
 from os.path import join, abspath, dirname, normpath
 
@@ -99,6 +100,14 @@ class SphinxTest(object):
     def clean(self):
         # Destroy build whole Sphinx directory
         rmtree(self.workspace)
+
+        # Reset logging handler installed by Sphinx
+        logger = getLogger()
+        logger.setLevel(NOTSET)
+
+        # clear all handlers
+        for handler in logger.handlers[:]:
+            logger.removeHandler(handler)
 
 
 @fixture(scope='function')
