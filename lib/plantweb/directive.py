@@ -137,7 +137,8 @@ class Plantweb(Image):
         try:
             # If building LaTex, use latex_output if set, otherwise
             # use None (uses value of 'output')
-            if builder.format == 'latex' and 'latex_format' in defaults.read_defaults():
+            if (builder.format == 'latex' and
+                    'latex_format' in defaults.read_defaults()):
                 frmt = defaults.read_defaults()['latex_format']
             else:
                 frmt = None

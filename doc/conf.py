@@ -294,6 +294,7 @@ texinfo_documents = [
 def setup(app):
     app.add_stylesheet('styles/custom.css')
 
+
 # AutoAPI configuration
 autoapi_modules = {
     'plantweb': None
