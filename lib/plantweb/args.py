@@ -118,7 +118,7 @@ def parse_args(argv=None):
         '--format',
         default='auto',
         help='diagram export format',
-        choices=['auto', 'svg', 'png']
+        choices=['auto', 'svg', 'png', 'eps', 'epstext']
     )
 
     parser.add_argument(
