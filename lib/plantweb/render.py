@@ -79,7 +79,7 @@ def render_cached(
 
     :param str server: URL to PlantUML server.
     :param str format: File format to render the content. One of the supported
-     by the PlantUML server (``svg`` or ``png``).
+     by the PlantUML server (``svg``, ``png``, ``eps`` or ``epstext``).
     :param str content: Content to render with mandatory ``@startxxx`` tags.
     :param bool use_cache: Use local cache to avoid requesting the server for
      already rendered diagrams. If ``None``, the default value will be used.
@@ -142,9 +142,10 @@ def render(
      ``'plantuml'``, ``'graphviz'`` or ``'ditaa'``. If ``None``, the engine
      will be auto-determined by looking into the content for the ``@startxxxx``
      tags, and if unable to be auto-determined the default engine will be used.
-    :param str format: Format of the rendered content. Raster ``png`` or vector
-     ``svg``. Please note that engine ``ditaa`` can only render to ``png``. If
-     ``None``, the default formatwill always be selected unless the engine
+    :param str format: Format of the rendered content. Raster ``png``, vector
+     ``svg``, vector ``eps`` or vector with text ``epstext``.
+     Please note that engine ``ditaa`` can only render to ``png``. If
+     ``None``, the default format will always be selected unless the engine
      doesn't supports it.
     :param str server: URL to PlantUML server. This will passed as is to
      :func:`render_cached`. If ``None`` the default server URL will be used.

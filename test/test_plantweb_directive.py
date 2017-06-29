@@ -41,7 +41,7 @@ def identify_content(content):
 def images_in(path):
     return [
         f for f in listdir(path)
-        if f.endswith('.png') or f.endswith('.svg')
+        if f.endswith('.png') or f.endswith('.svg') or f.endswith('.eps')
     ]
 
 

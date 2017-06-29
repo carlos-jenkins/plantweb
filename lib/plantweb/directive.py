@@ -135,9 +135,18 @@ class Plantweb(Image):
 
         # Execute plantweb call
         try:
+            # If building LaTex, use latex_output if set, otherwise
+            # use None (uses value of 'output')
+            if (builder.format == 'latex' and
+                    'latex_format' in defaults.read_defaults()):
+                frmt = defaults.read_defaults()['latex_format']
+            else:
+                frmt = None
+
             output, frmt, engine, sha = render(
                 '\n'.join(content),
-                engine=self._get_engine_name()
+                engine=self._get_engine_name(),
+                format=frmt
             )
         except:
             msg = format_exc()
@@ -150,7 +159,7 @@ class Plantweb(Image):
             return [error]
 
         # Determine filename
-        filename = '{}.{}'.format(sha, frmt)
+        filename = '{}.{}'.format(sha, frmt[:3])
         imgpath = join(builder.outdir, builder.imagedir, 'plantweb')
 
         # Create images output folder

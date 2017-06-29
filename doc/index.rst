@@ -104,7 +104,7 @@ Complete options:
    user@host:~$ plantweb --help
    usage: plantweb [-h] [-v] [--version]
                    [--engine {auto,plantuml,graphviz,ditaa}]
-                   [--format {auto,svg,png}] [--server SERVER] [--no-cache]
+                   [--format {auto,svg,png,eps,epstext}] [--server SERVER] [--no-cache]
                    [--cache-dir CACHE_DIR]
                    sources [sources ...]
 
@@ -119,7 +119,7 @@ Complete options:
      --version             show program's version number and exit
      --engine {auto,plantuml,graphviz,ditaa}
                            engine to use to render diagram
-     --format {auto,svg,png}
+     --format {auto,svg,png,eps,epstext}
                            diagram export format
      --server SERVER       server to use for rendering
      --no-cache            do not use cache
@@ -204,6 +204,11 @@ absolute path from where the ``conf.py`` like this:
 
 The above will load the file from the Sphinx documentation root.
 
+.. versionadded:: 1.1.0
+
+The configuration in ``plantweb_defaults`` accepts a ``latex_format`` that sets
+the output file format used with the LaTeX builder. Default is ``eps`` which
+looks better than ``png``.
 
 Options
 +++++++
@@ -433,6 +438,7 @@ For example:
        "cache_dir": "~/.cache/plantweb",
        "engine": "plantuml",
        "format": "svg",
+       "latex_format": "eps",
        "use_cache": true
    }
 

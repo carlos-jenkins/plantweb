@@ -53,7 +53,7 @@ def test_main(tmpdir, sources):
     out_names = [
         name
         for name, ext in [splitext(out) for out in listdir(getcwd())]
-        if ext in ['.png', '.svg']
+        if ext in ['.png', '.svg', '.eps']
     ]
 
     assert set(src_names) == set(out_names)
