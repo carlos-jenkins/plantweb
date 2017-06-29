@@ -65,8 +65,8 @@ def validate_args(args):
     args.sources = sources
 
     # Check that format and engine compatibility
-    if args.format == 'svg' and args.engine == 'ditaa':
-        log.error('The ditaa engine doens\'t support the svg format')
+    if args.format != 'png' and args.engine == 'ditaa':
+        log.error('The ditaa engine only supports the png format')
         exit(1)
 
     # Prepare default datatypes
