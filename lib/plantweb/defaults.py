@@ -140,9 +140,17 @@ def _read_defaults_file(path):
     """
 
     rcfile = expanduser(path)
+
     if isfile(rcfile):
+
         with open(rcfile, 'r') as fd:
-            return loads(fd.read())
+            defaults = loads(fd.read())
+
+            log.debug('Read defaults from {}:\n{}'.format(
+                rcfile, defaults
+            ))
+
+            return defaults
 
     log.info('Defaults file {} doesn\'t exists'.format(rcfile))
     return {}
@@ -194,6 +202,7 @@ def read_defaults(cached=True):
     :rtype: dict
     """
     if cached and hasattr(read_defaults, 'cache'):
+        log.debug('Read defaults from cache: {}'.format(read_defaults.cache))
         return read_defaults.cache
 
     defaults = {}
@@ -211,6 +220,7 @@ def read_defaults(cached=True):
             raise Exception('Unknown provider URI {}'.format(provider))
 
     read_defaults.cache = defaults
+    log.debug('Caching defaults: {}'.format(read_defaults.cache))
     return defaults
 
 

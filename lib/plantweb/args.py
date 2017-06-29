@@ -69,15 +69,25 @@ def validate_args(args):
         log.error('The ditaa engine doens\'t support the svg format')
         exit(1)
 
+    args.use_cache = not args.no_cache
+
     # Prepare default datatypes
     if args.engine == 'auto':
         args.engine = None
     if args.format == 'auto':
         args.format = None
 
+    if args.server == 'auto':
+        args.server = None
+
+    if args.use_cache is True:
+        args.use_cache = None
+    if args.cache_dir == 'auto':
+        args.cache_dir = None
+
     # Ensure cache dir
-    if not args.no_cache:
-        mkpath(expanduser(args.cache_dir))
+    # if not args.no_cache:
+    #    mkpath(expanduser(args.cache_dir))
 
     return args
 
@@ -123,7 +133,7 @@ def parse_args(argv=None):
 
     parser.add_argument(
         '--server',
-        default='http://plantuml.com/plantuml/',
+        default='auto',
         help='server to use for rendering'
     )
 
@@ -134,7 +144,7 @@ def parse_args(argv=None):
     )
     parser.add_argument(
         '--cache-dir',
-        default='~/.cache/plantweb',
+        default='auto',
         help='directory to store cached renders'
     )
 

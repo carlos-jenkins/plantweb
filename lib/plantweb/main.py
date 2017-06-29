@@ -25,6 +25,7 @@ from __future__ import print_function, division
 import logging
 
 from .render import render_file
+from .defaults import read_defaults
 
 
 log = logging.getLogger(__name__)
@@ -39,19 +40,41 @@ def main(args):
     :return: Exit code.
     :rtype: int
     """
+
+    config = {
+        'engine': args.engine,
+        'format': args.format,
+        'server': args.server,
+        'use_cache': args.use_cache,
+        'cache_dir': args.cache_dir
+    }
+
+    # Set overridable arguments with configuration
+    defaults = read_defaults()
+
+    for key in config.keys():
+        if config[key] is None:
+            config[key] = defaults[key]
+
+    for human, key in [
+        ('Engine: ', 'engine'),
+        ('Format: ', 'format'),
+        ('Server: ', 'server'),
+        ('Use Cache: ', 'use_cache'),
+        ('Cache Dir: ', 'cache_dir'),
+    ]:
+        print('  {}: {}'.format(human, config[key]))
+
     for src in args.sources:
 
         destination = render_file(
             src,
             renderopts={
-                'engine': args.engine,
-                'format': args.format,
-                'server': args.server
+                key: config[key] for key in ['engine', 'format', 'server']
             },
             cacheopts={
-                'use_cache': not args.no_cache,
-                'cache_dir': args.cache_dir
-            }
+                key: config[key] for key in ['use_cache', 'cache_dir']
+            },
         )
 
         print('Writing output for {} to {}'.format(src, destination))
