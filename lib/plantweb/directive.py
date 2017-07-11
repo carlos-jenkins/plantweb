@@ -116,7 +116,7 @@ class Plantweb(Image):
             srcfile = self.arguments[0]
 
             if isabs(srcfile):
-                srcpath = join(env.confdir, srcfile)
+                srcpath = join(env.app.confdir, relpath(srcfile, start='/'))
             else:
                 srcpath = join(document_dir, srcfile)
 
