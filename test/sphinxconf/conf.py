@@ -48,7 +48,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'PlantwebTest'
-copyright = '2016, Carlos Jenkins'
+copyright = '2016-2017, Carlos Jenkins'
 author = 'Carlos Jenkins'
 
 # The version info for the project you're documenting, acts as replacement for
