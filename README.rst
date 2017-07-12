@@ -32,6 +32,27 @@ Documentation
 Changelog
 =========
 
+1.1.0
+-----
+
+**New**
+
+- Added documentation on how to run a PlantUML docker container to simplify
+  deployment.
+
+**Fixes**
+
+- Fix #9 passing source files to the Sphinx directive as an absolute path.
+- Fix #7 source files passed as argument to the Sphinx directive failed to
+  render correctly.
+- Fixed test suite to be compatible with newer versions of Sphinx.
+- Fixed several PEP8 violations.
+
+**Changes**
+
+- Improved algorithm to gather configuration for a git repository root.
+- Test suite now test Python 3 with Python 3.5 instead of Python 3.4.
+
 1.0.1
 -----
 
