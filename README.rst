@@ -32,8 +32,8 @@ Documentation
 Changelog
 =========
 
-1.1.0
------
+1.1.0 (Jul 11, 2017)
+--------------------
 
 **New**
 
@@ -53,37 +53,37 @@ Changelog
 - Improved algorithm to gather configuration for a git repository root.
 - Test suite now test Python 3 with Python 3.5 instead of Python 3.4.
 
-1.0.1
------
+1.0.1 (Mar 20, 2017)
+--------------------
 
 **Fixes**
 
 - Fix #1 that caused diagrams rendering to fail with a 404 in Windows OSes.
 
-1.0.0
------
+1.0.0 (Jun 27, 2016)
+--------------------
 
 **New**
 
 - Sphinx directives now support passing a source file as argument.
 
-0.4.0
------
+0.4.0 (Jun 23, 2016)
+--------------------
 
 **New**
 
 - Added a set of Sphinx directives ``uml``, ``graph`` and ``diagram``.
 
-0.3.0
------
+0.3.0 (Jun 22, 2016)
+--------------------
 
 **New**
 
 - Default options can now be overriden with a ``.plantwebrc`` file in the user
   home or in the git repository root.
 
-0.2.0
------
+0.2.0 (Jun 22, 2016)
+--------------------
 
 **Fixes**
 
@@ -93,8 +93,8 @@ Changelog
 
 - Documentation was greatly improved.
 
-0.1.0
------
+0.1.0 (Jun 9, 2016)
+-------------------
 
 **New**
 
