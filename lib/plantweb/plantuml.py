@@ -120,7 +120,7 @@ def plantuml(server, extension, content):
     encoded = compress_and_encode(content)
     url = join(server, extension, encoded)
     log.debug('Calling URL:\n{}'.format(url))
-    response = get(url)
+    response = get(url, verify=False)
     response.raise_for_status()
     return response.content
 
