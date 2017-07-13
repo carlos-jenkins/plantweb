@@ -33,11 +33,19 @@ from six import indexbytes, unichr
 log = logging.getLogger(__name__)
 
 
+class PlantUMLException(Exception):
+    """
+    Exception raised when PlantUML server failed to render a diagram.
+    """
+    pass
+
+
 def compress_and_encode(content):
     """
     Compress the plantuml text and encode it for the plantuml server.
 
     :param str content: Content to compress and encode.
+
     :return: The compressed and encoded content.
     :rtype: str
     """
@@ -53,6 +61,7 @@ def encode(data):
     This algorithm is similar to the base64 but custom for the plantuml server.
 
     :param bytes data: Data to encode.
+
     :return: The encoded data as printable ASCII.
     :rtype: str
     """
@@ -114,6 +123,7 @@ def plantuml(server, extension, content):
     :param str server: Base URL for the server.
     :param str extension: File format / extension to use for the request.
     :param str content: Content to render.
+
     :return: Response of the request.
     :rtype: str
     """
@@ -122,6 +132,11 @@ def plantuml(server, extension, content):
     log.debug('Calling URL:\n{}'.format(url))
     response = get(url)
     response.raise_for_status()
+
+    error = response.headers.get('X-PlantUML-Diagram-Error')
+    if error:
+        raise PlantUMLException(error)
+
     return response.content
 
 
