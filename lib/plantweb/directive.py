@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2016 Carlos Jenkins
+# Copyright (C) 2016-2017 Carlos Jenkins
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -109,14 +109,14 @@ class Plantweb(Image):
 
         # Load content to render
         if not self.arguments:
-            content = self.content
+            content = '\n'.join(self.content)
         else:
             # Source file should be relative to document, or absolute to
             # configuration directory.
             srcfile = self.arguments[0]
 
             if isabs(srcfile):
-                srcpath = join(env.confdir, srcfile)
+                srcpath = join(env.app.confdir, relpath(srcfile, start='/'))
             else:
                 srcpath = join(document_dir, srcfile)
 
@@ -136,10 +136,10 @@ class Plantweb(Image):
         # Execute plantweb call
         try:
             output, frmt, engine, sha = render(
-                '\n'.join(content),
+                content,
                 engine=self._get_engine_name()
             )
-        except:
+        except Exception:
             msg = format_exc()
             error = nodes.error(
                 '', self.state_machine.reporter.error(
@@ -283,7 +283,7 @@ def setup(app):
     # Wee want to override the directives:
     # - 'graph' from sphinx.ext.graphviz extension.
     # - 'uml' from sphinxcontrib.plantuml
-    # But Sphinx warns of the override, causing failure is warnings are set
+    # But Sphinx warns of the override, causing failure if warnings are set
     # to fail documentation build. So, we go down and use docutils registering
     # directly instead.
 

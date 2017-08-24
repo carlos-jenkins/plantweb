@@ -315,7 +315,7 @@ Python API
 
 .. currentmodule:: plantweb.render
 
-There are 2 main functions, both Python 2.7 and 3.4 compatible:
+There are 2 main functions, both Python 2.7 and 3.5 compatible:
 
 #. :func:`render` allows to render content directly.
 
@@ -454,8 +454,16 @@ If you require:
 - To speed up rendering in your intranet.
 - Or you simply want to be nice and unload the public server.
 
-Please consider installing a PlantUML server in your local network or private
-server:
+Please consider running a PlantUML server in your local network or private
+server. The easiest way is to do it is using the official
+`PlantUML Docker image <https://hub.docker.com/r/plantuml/plantuml-server/>`_:
+
+.. code-block:: sh
+
+   docker pull plantuml/plantuml-server
+   docker run --detach --publish 8080:8080 plantuml/plantuml-server
+
+For more information about the PlantUML server visit:
 
 - http://plantuml.com/server.html
 
@@ -486,7 +494,7 @@ License
 
 .. code-block:: text
 
-   Copyright (C) 2016 Carlos Jenkins
+   Copyright (C) 2016-2017 Carlos Jenkins
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

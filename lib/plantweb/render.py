@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2016 Carlos Jenkins
+# Copyright (C) 2016-2017 Carlos Jenkins
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -167,7 +167,7 @@ def render(
             content = '@start{0}\n{1}\n@end{0}'.format(wrap, content)
 
         elif engine_found != engine:
-            log.warn(
+            log.warning(
                 'Engine mismatch. Set: {0} != Found: {1}. '
                 'Assuming {1} ...'.format(engine, engine_found)
             )
@@ -180,7 +180,7 @@ def render(
     # Case 3: Use a default engine
     else:
         engine = read_defaults()['engine']
-        log.warn(
+        log.warning(
             'Unable to determine the engine. Assuming \'{}\'...'.format(engine)
         )
 
