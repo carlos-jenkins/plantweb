@@ -26,7 +26,7 @@ from logging import getLogger
 from traceback import format_exc
 from distutils.dir_util import mkpath
 from abc import ABCMeta, abstractmethod
-from os.path import join, relpath, dirname, isfile, isabs
+from os.path import join, relpath, dirname, isfile, isabs, realpath
 
 from six import add_metaclass
 from docutils import nodes
@@ -106,6 +106,7 @@ class Plantweb(Image):
 
         # Determine document directory
         document_dir = dirname(env.doc2path(env.docname))
+        document_dir = realpath(document_dir)
 
         # Load content to render
         if not self.arguments:
