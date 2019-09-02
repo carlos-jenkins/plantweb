@@ -105,8 +105,7 @@ class Plantweb(Image):
         builder = env.app.builder
 
         # Determine document directory
-        document_dir = dirname(env.doc2path(env.docname))
-        document_dir = realpath(document_dir)
+        document_dir = realpath(dirname(env.doc2path(env.docname)))
 
         # Load content to render
         if not self.arguments:
@@ -172,8 +171,12 @@ class Plantweb(Image):
 
         # Determine relative path to image from source document directory
         filepath_relative = relpath(filepath, document_dir)
-        # Replace backslash with slash, otherwise they are removed:
+
+        # Windows compatibility:
+        # Sphinx Image directive expects paths in POSIX, Python's form.
+        # Replace backslash with slash, otherwise they are removed.
         filepath_relative = filepath_relative.replace('\\', '/')
+
         log.debug('Image relative path {}'.format(filepath_relative))
 
         # Run Image directive
