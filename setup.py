@@ -62,8 +62,10 @@ setup(
     version=find_version('lib/plantweb/__init__.py'),
     package_dir={'': 'lib'},
     packages=find_packages('lib'),
-    scripts=['bin/plantweb'],
-
+    #scripts=['bin/plantweb'],
+    entry_points={
+        'console_scripts': ['plantweb=plantweb.main:plantweb_cmd'],
+    },
     # Dependencies
     install_requires=find_requirements('requirements.txt'),
 
