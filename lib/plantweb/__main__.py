@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2016-2017 Carlos Jenkins
+# Copyright (C) 2017-2019 KuraLabs S.R.L
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +16,28 @@
 # under the License.
 
 """
-PlantUML Client in Python executable script.
-
-See https://plantweb.readthedocs.org/
+plantweb executable module entry point.
 """
 
-import sys
+from sys import exit
 
-if __name__ == '__main__':
+
+def run():
 
     # Parse arguments
-    from plantweb.args import parse_args
-    args = parse_args()
+    from .args import InvalidArguments, parse_args
+    try:
+        args = parse_args()
+    except InvalidArguments:
+        exit(1)
 
     # Run program
-    from plantweb.main import main
-    sys.exit(main(args))
+    from .main import main
+    exit(main(args))
+
+
+if __name__ == '__main__':
+    run()
+
+
+__all__ = []

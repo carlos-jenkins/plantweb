@@ -36,6 +36,7 @@ def main(args):
 
     :param args: An arguments namespace.
     :type args: :py:class:`argparse.Namespace`
+
     :return: Exit code.
     :rtype: int
     """
@@ -58,11 +59,7 @@ def main(args):
 
     return 0
 
-def plantweb_cmd():
-    # Parse arguments
-    from plantweb.args import parse_args
-    args = parse_args()
 
-    import sys
-    sys.exit(main(args))
-__all__ = ['main']
+__all__ = [
+    'main',
+]

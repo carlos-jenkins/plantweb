@@ -41,6 +41,14 @@ V_LEVELS = {
 }
 
 
+class InvalidArguments(Exception):
+    """
+    Typed exception that allows to fail in argument parsing and verification
+    without quiting the process.
+    """
+    pass
+
+
 def validate_args(args):
     """
     Validate that arguments are valid.
@@ -59,15 +67,17 @@ def validate_args(args):
     sources = []
     for src in args.sources:
         if not isfile(src):
-            log.error('No such file : {}'.format(src))
-            exit(1)
+            raise InvalidArguments(
+                'No such file {}'.format(src)
+            )
         sources.append(abspath(src))
     args.sources = sources
 
     # Check that format and engine compatibility
     if args.format == 'svg' and args.engine == 'ditaa':
-        log.error('The ditaa engine doens\'t support the svg format')
-        exit(1)
+        raise InvalidArguments(
+            'The ditaa engine doens\'t support the svg format'
+        )
 
     # Prepare default datatypes
     if args.engine == 'auto':
@@ -145,7 +155,12 @@ def parse_args(argv=None):
     )
 
     args = parser.parse_args(argv)
-    args = validate_args(args)
+    try:
+        args = validate_args(args)
+    except InvalidArguments as e:
+        log.critical(e)
+        raise e
+
     return args
 
 

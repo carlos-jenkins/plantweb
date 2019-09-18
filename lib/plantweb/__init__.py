@@ -22,6 +22,6 @@ Plantweb module entry point.
 from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
-__author__ = 'Carlos Jenkins'
-__email__ = 'carlos@jenkins.co.cr'
-__version__ = '1.1.0'
+__author__ = 'KuraLabs S.R.L'
+__email__ = 'info@kuralabs.io'
+__version__ = '1.2.0'

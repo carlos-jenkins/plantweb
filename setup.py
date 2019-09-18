@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2016-2017 Carlos Jenkins
+# Copyright (C) 2019 KuraLabs S.R.L
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,10 +63,7 @@ setup(
     version=find_version('lib/plantweb/__init__.py'),
     package_dir={'': 'lib'},
     packages=find_packages('lib'),
-    #scripts=['bin/plantweb'],
-    entry_points={
-        'console_scripts': ['plantweb=plantweb.main:plantweb_cmd'],
-    },
+
     # Dependencies
     install_requires=find_requirements('requirements.txt'),
 
@@ -94,5 +92,9 @@ setup(
     # ``.. autodata::`` directive, causing caos in autoapi.
     # With this, we will disabled zip_safe flag for Readthedocs for correct
     # autoapi generation.
-    zip_safe=False
+    zip_safe=False,
+
+    entry_points={
+        'console_scripts': ['plantweb=plantweb.__main__.run'],
+    },
 )
