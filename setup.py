@@ -95,6 +95,6 @@ setup(
     zip_safe=False,
 
     entry_points={
-        'console_scripts': ['plantweb=plantweb.__main__.run'],
+        'console_scripts': ['plantweb=plantweb.__main__:run'],
     },
 )

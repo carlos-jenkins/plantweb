@@ -24,4 +24,4 @@ from __future__ import print_function, division
 
 __author__ = 'KuraLabs S.R.L'
 __email__ = 'info@kuralabs.io'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
