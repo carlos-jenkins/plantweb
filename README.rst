@@ -32,6 +32,21 @@ Documentation
 Changelog
 =========
 
+1.2.1 (Sep 18, 2019)
+--------------------
+
+**Fixes**
+
+- Fix #15 so that directive works on Windows.
+- Fix #16 so that the executable is available on Windows.
+
+1.2.0 (Sep 18, 2019)
+--------------------
+
+.. warning::
+
+   Bad release. Do not use it. Ups.
+
 1.1.0 (Jul 11, 2017)
 --------------------
 
