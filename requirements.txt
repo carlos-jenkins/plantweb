@@ -1,3 +1,4 @@
 six
 requests
 docutils
+recommonmark~=0.6.0
