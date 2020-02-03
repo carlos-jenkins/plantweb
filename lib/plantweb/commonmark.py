@@ -138,3 +138,8 @@ def setup(app):
 
     # Register the config value to allow to set plantweb defaults in conf.py
     app.add_config_value('plantweb_recommonmark', {}, 'env')
+
+
+__all__ = [
+    'CommonmarkCodeDirective', 'setup',
+    ]
