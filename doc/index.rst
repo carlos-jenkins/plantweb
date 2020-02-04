@@ -363,6 +363,8 @@ If you want to configure the commonmark integration you can create the variable
    # Plantweb configuration
    plantweb_recommonmark = {
        'enable_plantuml_code': True,
+       'enable_graph_code': True,
+       'enable_diagram_code': True,
        'commonmark_suffixes': ['.md'],
    }
 

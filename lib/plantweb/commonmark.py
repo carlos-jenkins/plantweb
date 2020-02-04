@@ -26,6 +26,8 @@ class CommonmarkCodeDirective(transforms.Transform):
 
     default_config = {
         'enable_plantuml_code': True,
+        'enable_graph_code': True,
+        'enable_diagram_code': True,
         'commonmark_suffixes': ['.md'],
     }
 
@@ -58,7 +60,7 @@ class CommonmarkCodeDirective(transforms.Transform):
                 return self.state_machine.run_directive(
                     'graph', content=content)
         if language == 'diagram':
-            if self.config['enable_plantuml_code']:
+            if self.config['enable_diagram_code']:
                 return self.state_machine.run_directive(
                     'diagram', content=content)
         return None
