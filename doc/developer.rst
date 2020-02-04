@@ -21,7 +21,7 @@ Setup Development Environment
    .. code-block:: sh
 
       sudo pip3 install flake8 pep8-naming
-      flake8 --install-hook
+      flake8 --install-hook git
       git config flake8.strict true
 
 
