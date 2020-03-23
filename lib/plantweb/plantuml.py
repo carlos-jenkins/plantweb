@@ -26,7 +26,7 @@ import logging
 from zlib import compress
 from posixpath import join
 
-from requests import get
+from requests import get, HTTPError
 from six.moves import range
 from six import indexbytes, unichr
 
@@ -122,6 +122,14 @@ def plantuml(server, extension, content):
     log.debug('Calling URL:\n{}'.format(url))
     response = get(url)
     response.raise_for_status()
+    if 'X-PlantUML-Diagram-Error' in response.headers:
+        raise HTTPError(
+            'PlantUML Diagram Error: {} at line: {}'.format(
+                response.headers['X-PlantUML-Diagram-Error'],
+                response.headers['X-PlantUML-Diagram-Error-Line']
+            ),
+            response=response
+        )
     return response.content
 
 
