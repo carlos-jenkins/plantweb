@@ -36,6 +36,7 @@ log = logging.getLogger(__name__)
 
 WRAP_STR = {
     'plantuml': 'uml',
+    'mindmap': 'mindmap',
     'ditaa': 'ditaa',
     'graphviz': 'dot'
 }
