@@ -1,4 +1,4 @@
 six
 requests
-docutils=0.16
+docutils==0.16
 recommonmark~=0.6.0
