@@ -31,7 +31,7 @@ from traceback import format_exc
 from sys import getdefaultencoding
 from subprocess import Popen, PIPE
 from importlib import import_module
-from distutils.spawn import find_executable
+from shutil import which
 from os.path import isfile, expanduser, join
 
 
@@ -95,7 +95,7 @@ def _read_defaults_git(path):
     See :data:`DEFAULTS_PROVIDERS` for inner workings.
     """
     # Find git executable
-    git = find_executable('git')
+    git = which('git')
     if not git:
         log.debug(
             'Unable to read defaults from repository. '

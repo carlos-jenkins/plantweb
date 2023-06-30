@@ -24,7 +24,7 @@ from __future__ import print_function, division
 
 from logging import getLogger
 from traceback import format_exc
-from distutils.dir_util import mkpath
+from os import makedirs
 from abc import ABCMeta, abstractmethod
 from os.path import join, relpath, dirname, isfile, isabs, realpath
 
@@ -155,7 +155,7 @@ class Plantweb(Image):
 
         # Create images output folder
         log.debug('imgpath set to {}'.format(imgpath))
-        mkpath(imgpath)
+        makedirs(imgpath, exist_ok=True)
 
         # Write content
         filepath = join(imgpath, filename)

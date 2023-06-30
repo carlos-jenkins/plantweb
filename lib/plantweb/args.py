@@ -23,7 +23,7 @@ from __future__ import unicode_literals, absolute_import
 from __future__ import print_function, division
 
 import logging
-from distutils.dir_util import mkpath
+from os import makedirs
 from os.path import isfile, abspath, expanduser
 
 from . import __version__
@@ -87,7 +87,7 @@ def validate_args(args):
 
     # Ensure cache dir
     if not args.no_cache:
-        mkpath(expanduser(args.cache_dir))
+        makedirs(expanduser(args.cache_dir), exist_ok=True)
 
     return args
 

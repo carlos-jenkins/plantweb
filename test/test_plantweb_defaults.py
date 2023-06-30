@@ -30,7 +30,7 @@ from os import chdir, getcwd
 from os.path import abspath, join
 from subprocess import check_call
 from shlex import split as shsplit
-from distutils.spawn import find_executable
+from shutil import which
 
 from pytest import mark
 
@@ -38,7 +38,7 @@ from plantweb import defaults
 
 
 @mark.skipif(
-    find_executable('git') is None,
+    which('git') is None,
     reason='git executable is missing'
 )
 def test_defaults(tmpdir, monkeypatch):
