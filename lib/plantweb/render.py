@@ -24,7 +24,7 @@ from __future__ import print_function, division
 
 import logging
 from hashlib import sha256
-from distutils.dir_util import mkpath
+from os import makedirs
 from os.path import basename, splitext, isfile, expanduser, join
 
 from .plantuml import plantuml
@@ -116,7 +116,7 @@ def render_cached(
             return (fd.read(), sha)
 
     # No cache, make sure the directory is available
-    mkpath(cache_dir)
+    makedirs(cache_dir, exist_ok=True)
 
     # Normal render and save cache
     output = plantuml(server, format, content)

@@ -28,7 +28,7 @@ from os import listdir
 from shutil import rmtree
 from tempfile import mkdtemp
 from logging import getLogger, NOTSET
-from distutils.dir_util import mkpath
+from os import makedirs
 from os.path import join, abspath, dirname, normpath
 
 from pytest import fixture
@@ -66,7 +66,7 @@ class SphinxTest(object):
         self.outdir = join(self.workspace, '_build')
         self.doctreedir = join(self.workspace, '_doctrees')
 
-        mkpath(self.srcdir)
+        makedirs(self.srcdir, exist_ok=True)
 
         # Specify plantweb overrides
         self.cachedir = join(self.workspace, '_cache')
