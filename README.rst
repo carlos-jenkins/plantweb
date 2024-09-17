@@ -32,6 +32,13 @@ Documentation
 Changelog
 =========
 
+1.3.0 (Sep 17, 2024)
+--------------------
+
+**Fixes**
+
+- Fix #25 removes dependency on deprecated module distutils.
+
 1.2.1 (Sep 18, 2019)
 --------------------
 
