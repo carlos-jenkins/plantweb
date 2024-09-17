@@ -27,6 +27,8 @@ from __future__ import print_function, division
 from os import listdir, getcwd
 from os.path import join, isfile
 
+from requests import HTTPError
+
 from plantweb import defaults
 from plantweb.render import render_file, render
 
@@ -54,6 +56,21 @@ def test_render(tmpdir, sources):
 
         # Assert cache exists
         assert isfile(join(cache_dir, '{}.{}'.format(sha, format)))
+
+
+def test_render_error():
+
+    src = """\
+@startuml
+Bob -> Alice : hello
+This is an intentional error
+@enduml
+    """
+
+    with raises(HTTPError, message="Expecting HTTP header with error") as e:
+        render(src, cacheopts={'use_cache': False})
+
+    assert 'PlantUML Diagram Error' in str(e.value)
 
 
 def test_render_forced_and_defaults(monkeypatch):
