@@ -210,6 +210,19 @@ class UmlDirective(Plantweb):
         return 'uml'
 
 
+class MindmapDirective(Plantweb):
+    """
+    Specialized ``mindmap`` directive for Plantweb ``Plantweb`` engine.
+
+    See :class:`Plantweb`.
+    """
+
+    def _get_engine_name(self):
+        return 'mindmap'
+
+    def _get_directive_name(self):
+        return 'mindmap'
+
 class GraphDirective(Plantweb):
     """
     Specialized ``graph`` directive for Plantweb ``graphviz`` engine.
@@ -299,6 +312,7 @@ def setup(app):
 
     from docutils.parsers.rst import directives
     directives.register_directive('uml', UmlDirective)
+    directives.register_directive('mindmap', MindmapDirective)
     directives.register_directive('graph', GraphDirective)
     directives.register_directive('diagram', DiagramDirective)
 
