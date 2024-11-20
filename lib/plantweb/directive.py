@@ -151,7 +151,7 @@ class Plantweb(Image):
 
         # Determine filename
         filename = '{}.{}'.format(sha, frmt)
-        imgpath = join(builder.outdir, builder.imagedir, 'plantweb')
+        imgpath = join(builder.outdir, builder.imagedir)
 
         # Create images output folder
         log.debug('imgpath set to {}'.format(imgpath))
