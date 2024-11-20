@@ -310,6 +310,65 @@ is still considered, that is, the ``.plantwebrc`` files will still override
 other keys if present.
 
 
+Sphinx Commonmark Integration
++++++++++++++++++++++++++++++
+
+Additionally to the ReST directive, plantweb supports code blocks in commonmark, for Example:
+
+.. code-block:: md
+
+   ```plantuml
+      actor Foo1
+      boundary Foo2
+      control Foo3
+      entity Foo4
+      database Foo5
+      Foo1 -> Foo2 : To boundary
+      Foo1 -> Foo3 : To control
+      Foo1 -> Foo4 : To entity
+      Foo1 -> Foo5 : To database
+   ```
+
+   ```uml
+     # PlantUML
+   ```
+
+   ```graph
+     # Graphviz
+   ```
+
+   ```diagram
+     # Ditaa
+   ```
+
+
+
+To enable the integration, add ``'plantweb.commonmark'`` to your extensions in
+your Sphinx's ``conf.py``:
+
+.. code-block:: python
+
+   extensions = [
+       # ... More extensions,
+       'recommonmark',
+       'plantweb.directive',
+       'plantweb.commonmark',
+   ]
+
+If you want to configure the commonmark integration you can create the variable
+``plantweb_recommonmark`` in your Sphinx's ``conf.py``:
+
+.. code-block:: python
+
+   # Plantweb configuration
+   plantweb_recommonmark = {
+       'enable_plantuml_code': True,
+       'enable_graph_code': True,
+       'enable_diagram_code': True,
+       'commonmark_suffixes': ['.md'],
+   }
+
+
 Python API
 ----------
 
